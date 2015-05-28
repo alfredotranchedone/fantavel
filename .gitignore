@@ -3,6 +3,6 @@
 /storage
 .env
 .idea/
-/.idea
+/.idea/
 *.sqlite3
 *.db
