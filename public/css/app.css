@@ -1,0 +1,50 @@
+
+.marginTop {
+    margin-top: 25px;
+}
+
+.marginTop15{
+    margin-top: 15px;
+}
+
+.textShadow {
+    text-shadow: 0px 1px 0 rgba(0,0,0,0.5);
+}
+
+.size30 {
+    font-size: 30px;
+}
+
+table.tableResult {}
+table.tableResult td { font-size: 1.1em;}
+table.tableResult td a { font-size: 0.9em}
+
+table td.autowidth,
+table th.autowidth{
+    width: 1px;
+    white-space: nowrap;
+}
+
+table.formazione {}
+table.formazione .tshirtContainer{
+    position:relative;
+}
+table.formazione .tshirtContainer > img{
+    width: 50px
+}
+table.formazione .tshirtContainer div {
+    position: absolute;
+    top: 6px;
+    left: 0;
+    width: 50px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 15px;
+    color: #f5f5f5;
+}
+table.formazione td.P { background: #EDF2B8;}
+table.formazione td.D { background: #13c2a1;}
+table.formazione td.C { background: #03A898;}
+table.formazione td.A { background: rgba(2, 125, 143, 0.70);}
+table.formazione td.R.P { background: rgba(237, 242, 184, 0.50);}
+table.formazione td.R { background: rgba(2, 125, 143, 0.30);}
