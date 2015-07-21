@@ -4,6 +4,7 @@ use App\Calendario;
 use App\Classifica;
 use App\Player;
 use App\Team;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller {
 
@@ -44,15 +45,30 @@ class HomeController extends Controller {
 
         $classifica = Classifica::getClassifica();
 
-		return view('pages.home',[
-            'player_count' => Player::count(),
-            'team_count' => Team::count(),
-            'nextMatches' => $next,
-            'lastMatches' => $last,
-            'nextGiornata' => $nextGiornata,
-            'lastGiornata' => $lastGiornata,
-            'classifica' => $classifica,
-        ]);
-	}
+        switch (Auth::user()->levels_level) {
+
+            case 0:
+                return view('pages.home', ['player_count' => Player::count(),
+                'team_count' => Team::count(),
+                'nextMatches' => $next,
+                'lastMatches' => $last,
+                'nextGiornata' => $nextGiornata,
+                'lastGiornata' => $lastGiornata,
+                'classifica' => $classifica,]);
+                break;
+
+            case 100:
+            default:
+                return view('pages.users.home', ['player_count' => Player::count(),
+                    'team_count' => Team::count(),
+                    'nextMatches' => $next,
+                    'lastMatches' => $last,
+                    'nextGiornata' => $nextGiornata,
+                    'lastGiornata' => $lastGiornata,
+                    'classifica' => $classifica,]);
+                break;
+
+        }
+    }
 
 }

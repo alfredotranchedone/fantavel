@@ -48,6 +48,13 @@ class Authenticate {
 			}
 		}
 
+        /*
+        if ($this->auth->user()->levels_level == 0){
+            dd('admin');
+        } else {
+            dd('no admin');
+        }
+        */
 		return $next($request);
 	}
 

@@ -36,7 +36,7 @@ class RoseController extends Controller {
 
         $moduli = Moduli::all()->sortByDesc('modificatore');
 
-        return view('pages.admin.rose.formazione_index',[
+        return view('pages.users.rose.formazione_index',[
             'players' => $players,
             'teamId' => $teamId,
             'team' => $team,
@@ -148,5 +148,11 @@ class RoseController extends Controller {
     }
 
 
-
+    private function checkDataConsegna(){
+        
+    }
+    
+    
+    
+    
 }

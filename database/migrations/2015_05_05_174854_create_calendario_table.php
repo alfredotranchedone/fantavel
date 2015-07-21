@@ -17,6 +17,8 @@ class CreateCalendarioTable extends Migration {
 			$table->increments('id');
             $table->integer('giornata')->default(0);
             $table->integer('stagione_id')->default(0);
+            $table->string('dataGiornata')->default(0);
+            $table->string('dataConsegna')->default(0);
             $table->integer('team_1_id');
             $table->integer('team_2_id');
             $table->integer('modulo_1_id')->default(0);

@@ -37,7 +37,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function()
 });
 
 
-
+Route::get('user', 'HomeController@index');
 Route::group(['prefix' => 'user','middleware' => ['auth']], function() {
 
     Route::controllers(['formazione' => 'User\RoseController']);
