@@ -136,14 +136,20 @@ class CalendarioController extends Controller {
         $groups = array();
         foreach ($all as $item) {
             $key = $item['giornata'];
+            $dG = $item['dataGiornata'];
+            $dC = $item['dataConsegna'];
             if (!isset($groups[$key])) {
                 $groups[$key] = [
                     'incontri'=>array($item),
-                    'giornata'=>$key
+                    'giornata'=>$key,
+                    'dataGiornata'=> $dG,
+                    'dataConsegna'=> $dC,
                 ];
             } else {
                 $groups[$key]['incontri'][] = $item;
                 $groups[$key]['giornata'] = $key;
+                $groups[$key]['dataGiornata'] = $dG;
+                $groups[$key]['dataConsegna'] = $dC;
             }
         }
 

@@ -58,6 +58,23 @@
                             <td><a href="#">dettagli</a></td>
                         </tr>
                         @endforeach
+                        <tr>
+                            <td colspan="4">
+                                <b>Data Inizio Giornata: </b>
+                                @if($match['dataGiornata'])
+                                    {{ $match['dataGiornata'] }}
+                                @else
+                                    <a href="#"><i class="fa fa-angle-right"></i> Inserisci Data e Ora</a>
+                                @endif
+                                <hr style="margin-top: 10px; margin-bottom: 7px;"/>
+                                <b>Data Limite Consegna Formazione: </b>
+                                @if($match['dataConsegna'])
+                                    {{ $match['dataConsegna'] }}
+                                @else
+                                    <a href="#"><i class="fa fa-angle-right"></i> Inserisci Data e Ora</a>
+                                @endif
+                            </td>
+                        </tr>
                     </table>
                     </div>
                 @empty
