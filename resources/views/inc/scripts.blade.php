@@ -4,4 +4,9 @@
 <script src="{{ asset('/res/adminLTE/plugins/datatables/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('/res/adminLTE/plugins/datatables/dataTables.bootstrap.js') }}"></script>
 
+<script src="{{ asset('/res/pickadate/picker.js') }}"></script>
+<script src="{{ asset('/res/pickadate/picker.date.js') }}"></script>
+<script src="{{ asset('/res/pickadate/picker.time.js') }}"></script>
+<script src="{{ asset('/res/pickadate/translations/it_IT.js') }}"></script>
+
 <script src="{{ asset('/js/main.js') }}"></script>

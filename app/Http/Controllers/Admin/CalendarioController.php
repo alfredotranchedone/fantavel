@@ -136,6 +136,7 @@ class CalendarioController extends Controller {
         $groups = array();
         foreach ($all as $item) {
             $key = $item['giornata'];
+
             $dG = $item['dataGiornata'];
             $dC = $item['dataConsegna'];
             if (!isset($groups[$key])) {

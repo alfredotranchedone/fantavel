@@ -29,7 +29,8 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function()
     Route::controllers([
         'calendario' => 'Admin\CalendarioController',
         'rose' => 'Admin\RoseController',
-        'utility/backup' => 'Admin\BackupController'
+        'utility/backup' => 'Admin\BackupController',
+        'ajax' => 'Admin\AjaxController'
     ]);
 
     Route::get('/', 'HomeController@index');

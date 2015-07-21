@@ -129,6 +129,40 @@ $(document).ready(function() {
 } );
 
 
+$('.datepicker').pickadate({
+    format: 'dd-mm-yyyy',
+    formatSubmit: 'yyyy-mm-dd',
+});
+$('.timepicker').pickatime({
+    format: 'HH:i',
+    formatSubmit: 'HH:i',
+});
+
+
+
+$( ".ajaxForm" ).on( "submit", function( event ) {
+
+    event.preventDefault();
+
+    var _token = $('#_token').val();
+    var _action = $('#action',this).val();
+    var _formData = $( this ).serialize() + '&_token=' + _token;
+    //console.log(_formData);
+    $.ajax({
+        type        : 'POST',
+        url         : _action,
+        data        : _formData, // our data object
+        dataType    : 'json', // what type of data do we expect back from the server
+        encode          : true
+    }).done(function(data){
+        console.log(data);
+    });
+
+});
+
+
+
+
 function removePlayer(elem){
 
     var _playerCodice = $(elem).data('codice');
@@ -137,4 +171,10 @@ function removePlayer(elem){
     $('#playersDataTable tbody tr[data-player-codice='+ _playerCodice +']')
         .removeClass('active');
 
+}
+
+
+
+function dgAddFormToggle(n_id_form){
+    $('#dg-add-'+n_id_form).toggle();
 }

@@ -36,6 +36,9 @@
             <div class="box-body">
 
                 <div class="row">
+
+                <input type="hidden" name="_token" id="_token" value="<?php echo csrf_token(); ?>">
+
                 @forelse($all as $match)
                      <?php
                         if( $match['giornata'] > (count($all) / 2) ) {
@@ -62,14 +65,32 @@
                             <td colspan="4">
                                 <b>Data Inizio Giornata: </b>
                                 @if($match['dataGiornata'])
-                                    {{ $match['dataGiornata'] }}
+                                    {{ $match['dataGiornata'] }} <small><a href="javascript:dgAddFormToggle('{{ $match['giornata'] }}');">[modifica]</a></small>
                                 @else
-                                    <a href="#"><i class="fa fa-angle-right"></i> Inserisci Data e Ora</a>
+                                    <a href="javascript:dgAddFormToggle('{{ $match['giornata'] }}');"><i class="fa fa-angle-right"></i> Inserisci Data e Ora</a>
                                 @endif
+
+                                <form id="dg-add-{{ $match['giornata'] }}" class="ajaxForm" style="display: none">
+                                    <?php
+                                    $dg_d = false;
+                                    $dg_t = false;
+                                    if($match['dataGiornata']){
+                                        $dg_all = explode(' ',$match['dataGiornata']);
+                                        $dg_d = $dg_all[0];
+                                        $dg_t = $dg_all[1];
+                                    }
+                                    ?>
+                                    <input name="giornata" id="giornata" type="hidden" value="{{ $match['giornata'] }}">
+                                    <input name="data" type="text" class="datepicker" placeholder="Inserisci data" value="{{ $dg_d or '' }}">
+                                    <input name="time" type="text" class="timepicker" placeholder="Inserisci orario" value="{{ $dg_t or '' }}">
+                                    <input name="action" id="action" type="hidden" value="{{ url('admin/ajax/save-data-giornata') }}">
+                                    <button type="submit" class="btn btn-link">Salva</button>
+                                </form>
+
                                 <hr style="margin-top: 10px; margin-bottom: 7px;"/>
                                 <b>Data Limite Consegna Formazione: </b>
                                 @if($match['dataConsegna'])
-                                    {{ $match['dataConsegna'] }}
+                                    {{ $match['dataConsegna'] }} <small><a href="javascript:dgAddFormToggle('{{ $match['giornata'] }}');">[modifica]</a></small>
                                 @else
                                     <a href="#"><i class="fa fa-angle-right"></i> Inserisci Data e Ora</a>
                                 @endif

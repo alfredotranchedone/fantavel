@@ -21,6 +21,11 @@
     <link href="{{ asset('/res/adminLTE/2.0.5/css/skins/_all-skins.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/res/adminLTE/plugins/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
 
+    <!-- Pickadate Css -->
+    <link href="{{ asset('/res/pickadate/themes/default.css') }}" rel="stylesheet">
+    <link href="{{ asset('/res/pickadate/themes/default.date.css') }}" rel="stylesheet">
+    <link href="{{ asset('/res/pickadate/themes/default.time.css') }}" rel="stylesheet">
+
     <!-- Main Css -->
     <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
 
