@@ -129,37 +129,88 @@ $(document).ready(function() {
 } );
 
 
-$('.datepicker').pickadate({
-    format: 'dd-mm-yyyy',
-    formatSubmit: 'yyyy-mm-dd',
-});
-$('.timepicker').pickatime({
-    format: 'HH:i',
-    formatSubmit: 'HH:i',
-});
+/* DATEPICKER - TIMEPICKER INIT */
+    $('.datepicker').pickadate({
+        format: 'dd-mm-yyyy',
+        formatSubmit: 'yyyy-mm-dd',
+    });
 
+    $('.timepicker').pickatime({
+        format: 'HH:i',
+        formatSubmit: 'HH:i',
+    });
+/* --- */
 
 
 $( ".ajaxForm" ).on( "submit", function( event ) {
 
     event.preventDefault();
 
+    var _callback = $(this).data('callback');
+
     var _token = $('#_token').val();
     var _action = $('#action',this).val();
     var _formData = $( this ).serialize() + '&_token=' + _token;
+    var _formId = $( this).id;
     //console.log(_formData);
     $.ajax({
         type        : 'POST',
         url         : _action,
-        data        : _formData, // our data object
-        dataType    : 'json', // what type of data do we expect back from the server
-        encode          : true
-    }).done(function(data){
-        console.log(data);
+        data        : _formData,
+        dataType    : 'json',
+        encode      : true
+    }).done(function(response){
+        console.log('RESP',response);
+        console.log('DATA-ATTR-CB',_callback);
+        if(_callback)
+            eval(_callback);
     });
 
 });
 
+
+function ajaxSubmit(_form,_callback){
+
+    console.log(  );
+
+    var _token = $('#_token').val();
+    var _action = $('#action',_form).val();
+    var _formData = _form.serialize() + '&_token=' + _token;
+    var _formId = _form.attr('id');
+
+    // set form action
+    _form.attr('action',_action);
+
+    //console.log(_formData);
+
+    $.ajax({
+        type        : 'POST',
+        url         : _action,
+        data        : _formData,
+        dataType    : 'json',
+        encode      : true
+    }).done(function(response){
+        console.log('RESP',response);
+        console.log('DATA-ATTR-CB',_callback);
+        if(_callback)
+            _callback(_formId,response);
+    });
+
+    return false;
+
+}
+
+
+
+function repopulateForm(elem,resp){
+
+    var dg = resp.dataGiornata.split(' ');
+    var data = dg[0];
+    var ora = dg[1];
+
+    $('#'+elem).siblings('span').html( resp.dataGiornata )
+
+}
 
 
 
@@ -177,4 +228,7 @@ function removePlayer(elem){
 
 function dgAddFormToggle(n_id_form){
     $('#dg-add-'+n_id_form).toggle();
+}
+function dcAddFormToggle(n_id_form){
+    $('#dc-add-'+n_id_form).toggle();
 }
