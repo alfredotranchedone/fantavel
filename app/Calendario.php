@@ -54,6 +54,8 @@ class Calendario extends Model {
         */
         return $query
             ->select(DB::raw('calendario.giornata,
+                calendario.dataGiornata,
+                calendario.dataConsegna,
                 t1.name as team1,
                 t2.name as team2,
                 (SELECT min(DISTINCT(giornata))

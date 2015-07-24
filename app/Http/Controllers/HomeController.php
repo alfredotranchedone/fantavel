@@ -4,6 +4,7 @@ use App\Calendario;
 use App\Classifica;
 use App\Player;
 use App\Team;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller {
@@ -45,6 +46,9 @@ class HomeController extends Controller {
 
         $classifica = Classifica::getClassifica();
 
+        $d = new Carbon();
+        $d->createFromTimestamp( strtotime( $next->first()->dataGiornata ));
+
         switch (Auth::user()->levels_level) {
 
             case 0:
@@ -54,7 +58,9 @@ class HomeController extends Controller {
                 'lastMatches' => $last,
                 'nextGiornata' => $nextGiornata,
                 'lastGiornata' => $lastGiornata,
-                'classifica' => $classifica,]);
+                'classifica' => $classifica,
+                'dataGiornata' => $d->format('d/m/Y H:i:s')
+                ]);
                 break;
 
             case 100:

@@ -48,3 +48,8 @@ table.formazione td.C { background: #03A898;}
 table.formazione td.A { background: rgba(2, 125, 143, 0.70);}
 table.formazione td.R.P { background: rgba(237, 242, 184, 0.50);}
 table.formazione td.R { background: rgba(2, 125, 143, 0.30);}
+
+
+span.spacer {
+    display: inline-block; width: 20px;
+}

@@ -127,7 +127,14 @@
               </div><!-- /.box-body -->
               <div class="box-footer">
                 <a href="{{ url('admin/calendario') }}">
-                    <i class="fa fa-angle-right fa-fw"></i> Aggiungi Risultati</a>
+                    <i class="fa fa-angle-right"></i> Aggiungi Risultati</a>
+                  
+                <span class="spacer"></span>
+
+                  {{ $dataGiornata }}
+                  
+                <a href="{{ url('admin/calendario/mostra') }}">
+                    <i class="fa fa-angle-right"></i> Aggiungi Data</a></a>
               </div><!-- box-footer -->
             </div><!-- /.box -->
 

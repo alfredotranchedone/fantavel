@@ -88,33 +88,8 @@
                                 </form>
 
 
-                                {{--
-                                <hr style="margin-top: 10px; margin-bottom: 7px;"/>
-                                <b>Data Limite Consegna Formazione: </b>
-                                @if($match['dataConsegna'])
-                                    {{ $match['dataConsegna'] }} <small><a href="javascript:dcAddFormToggle('{{ $match['giornata'] }}');">[modifica]</a></small>
-                                @else
-                                    <a href="javascript:dcAddFormToggle('{{ $match['giornata'] }}');"><i class="fa fa-angle-right"></i> Inserisci Data e Ora</a>
-                                @endif
 
-                                <form id="dc-add-{{ $match['giornata'] }}" class="ajaxForm" style="display: none">
-                                    <?php
-                                    $dc_d = false;
-                                    $dc_t = false;
-                                    if($match['dataConsegna']){
-                                        $dc_all = explode(' ',$match['dataConsegna']);
-                                        $dc_d = date("d-m-Y", strtotime($dc_all[0]));
-                                        $dc_t = $dc_all[1];
-                                    }
-                                    ?>
-                                    <input name="giornata" id="giornata" type="hidden" value="{{ $match['giornata'] }}">
-                                    <input name="data" type="text" class="datepicker" placeholder="Data consegna" value="{{ $dc_d or '' }}">
-                                    <input name="time" type="text" class="timepicker" placeholder="Orario consegna" value="{{ $dc_t or '' }}">
-                                    <input name="action" id="action" type="hidden" value="{{ url('admin/ajax/save-data-consegna') }}">
-                                    <button type="submit" class="btn btn-link">Salva</button>
-                                </form>
 
-                                --}}
 
 
                             </td>
