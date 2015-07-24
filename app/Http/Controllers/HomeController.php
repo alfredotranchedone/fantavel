@@ -46,8 +46,22 @@ class HomeController extends Controller {
 
         $classifica = Classifica::getClassifica();
 
-        $d = new Carbon();
-        $d->createFromTimestamp( strtotime( $next->first()->dataGiornata ));
+        $nextData = $next->first()->dataGiornata;
+        $nextLimite =  $next->first()->dataConsegna;
+        $dg = false;
+        $dc = false;
+
+        if($nextData > 0) {
+            $d = new Carbon();
+            $dg = $d->createFromTimestamp(strtotime($nextData))
+                ->format('d/m/Y H:i:s');
+        }
+
+        if($nextLimite>0) {
+            $c = new Carbon();
+            $dc = $c->createFromTimestamp(strtotime($nextLimite))
+                ->format('d/m/Y H:i:s');
+        }
 
         switch (Auth::user()->levels_level) {
 
@@ -59,7 +73,8 @@ class HomeController extends Controller {
                 'nextGiornata' => $nextGiornata,
                 'lastGiornata' => $lastGiornata,
                 'classifica' => $classifica,
-                'dataGiornata' => $d->format('d/m/Y H:i:s')
+                'dataGiornata' => $dg,
+                'dataConsegna' => $dc
                 ]);
                 break;
 

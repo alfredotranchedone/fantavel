@@ -61,18 +61,6 @@
 
   </div>
 
-    <p>Contenuto</p>
-
-        @if(Auth::check())
-            log
-        @else
-            no log
-            <br/>
-        @endif
-
-    @unless (Auth::check())
-        You are not signed in.
-    @endunless
 
 
     <div class="row">
@@ -94,6 +82,27 @@
               <div class="box-body">
 
                   <h4>Giornata {{ $nextGiornata->giornata or '-'}}</h4>
+
+                  <table class="table table-condensed table-bordered table-striped">
+                      <tr>
+                          <th colspan="2" width="50%"><i class="fa fa-calendar-o fa-fw"></i> Data Giornata</th>
+                          <th colspan="2"><i class="fa fa-bell-o fa-fw"></i> Limite Consegna</th>
+                      </tr>
+                      <tr>
+                          <td colspan="2">
+                              @if($dataGiornata)
+                                  {{ $dataGiornata }}
+                                  <small>[<a href="{{ url('admin/calendario/mostra') }}">modifica</a></a>]</small>
+                              @else
+                                  <a href="{{ url('admin/calendario/mostra') }}">
+                                      <i class="fa fa-angle-right"></i> Aggiungi Data</a></a>
+                              @endif
+                          </td>
+                          <td colspan="2">
+                             {{ $dataConsegna or 'n.d.' }}
+                          </td>
+                      </tr>
+                  </table>
 
                   <table class="table table-bordered table-striped">
 
@@ -120,7 +129,6 @@
                               <td colspan="4">Nessun match programmato.</td>
                           </tr>
                       @endforelse
-
                   </table>
 
 
@@ -128,13 +136,6 @@
               <div class="box-footer">
                 <a href="{{ url('admin/calendario') }}">
                     <i class="fa fa-angle-right"></i> Aggiungi Risultati</a>
-                  
-                <span class="spacer"></span>
-
-                  {{ $dataGiornata }}
-                  
-                <a href="{{ url('admin/calendario/mostra') }}">
-                    <i class="fa fa-angle-right"></i> Aggiungi Data</a></a>
               </div><!-- box-footer -->
             </div><!-- /.box -->
 

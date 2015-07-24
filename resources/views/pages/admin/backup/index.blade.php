@@ -41,6 +41,11 @@
                         Backup completo del Database
                         <i class="fa fa-angle-right fa-fw"></i>
                     </a>
+                    <a href="{{ url('admin/utility/backup/ripristina') }}" class="list-group-item">
+                        <i class="fa fa-cloud-upload fa-fw"></i>
+                        Ripristina una versione del Database
+                        <i class="fa fa-angle-right fa-fw"></i>
+                    </a>
                 </div>
 
 
