@@ -24,8 +24,10 @@
           <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="fa fa-calendar"></i></span>
               <div class="info-box-content">
-                  <span class="info-box-text">Ultima Giornata</span>
-                  <span class="info-box-number size30">{{ $lastGiornata->giornata or ''}}</span>
+                  <span class="info-box-text">Prossima Giornata</span>
+                  <span class="info-box-number ">
+                      {{ $dataGiornata or 'n.d.'}}
+                  </span>
               </div><!-- /.info-box-content -->
           </div>
       </div>
@@ -33,10 +35,10 @@
 
       <div class="col-md-3">
           <div class="info-box">
-              <span class="info-box-icon bg-light-blue"><i class="fa fa-group"></i></span>
+              <span class="info-box-icon bg-light-blue"><i class="fa fa-shield"></i></span>
               <div class="info-box-content">
-                  <span class="info-box-text">Squadre</span>
-                  <span class="info-box-number size30">{{ $team_count }}</span>
+                  <span class="info-box-text">Partite Giocate</span>
+                  <span class="info-box-number size30">{{ $lastGiornata->giornata or ''}}</span>
               </div><!-- /.info-box-content -->
           </div>
       </div>
@@ -55,26 +57,21 @@
 
 
 
-      <div class="col-md-3">  </div>
+      <div class="col-md-3">
+          <div class="info-box">
+              <span class="info-box-icon bg-yellow"><i class="fa fa-line-chart"></i></span>
+              <div class="info-box-content">
+                  <span class="info-box-text">Andamento</span>
+                  <span class="info-box-number size30"><i class="fa fa-arrow-up"></i> </span>
+              </div><!-- /.info-box-content -->
+          </div>
+      </div>
 
 
 
   </div>
 
     <p>Contenuto</p>
-
-        @if(Auth::check())
-            Log Level: {{ Auth::user()->levels_level }}
-
-        @else
-            no log
-            <br/>
-        @endif
-
-    @unless (Auth::check())
-        You are not signed in.
-    @endunless
-
 
     <div class="row">
 
@@ -95,6 +92,23 @@
               <div class="box-body">
 
                   <h4>Giornata {{ $nextGiornata->giornata or '-'}}</h4>
+
+                  <table class="table table-condensed table-bordered table-striped">
+                      <tr>
+                          <th colspan="2" width="50%"><i class="fa fa-calendar-o fa-fw"></i> Data Giornata</th>
+                          <th colspan="2"><i class="fa fa-bell-o fa-fw"></i> Limite Consegna</th>
+                      </tr>
+                      <tr>
+                          <td colspan="2">
+                              @if($dataGiornata)
+                                  {{ $dataGiornata }}
+                              @endif
+                          </td>
+                          <td colspan="2">
+                              {{ $dataConsegna or 'n.d.' }}
+                          </td>
+                      </tr>
+                  </table>
 
                   <table class="table table-bordered table-striped">
 

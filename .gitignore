@@ -97,3 +97,6 @@ build/Release
 node_modules
 
 .idea/workspace.xml
+
+storage/database.sqlite
+storage/_database.sqlite
