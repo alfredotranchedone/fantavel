@@ -38,21 +38,22 @@ class HomeController extends Controller {
 	public function index()
 	{
 
-        $nextData = false;
-        $nextLimite = false;
-        
-        $next = Calendario::nextMatches();
-        $last = Calendario::lastMatches();
+        $nextData = 0;
+        $nextLimite = 0;
+
+        $next = Calendario::nextMatches()->get();
+        $last = Calendario::lastMatches()->get();
 
         $nextGiornata = Calendario::nextGiornata()->first();
         $lastGiornata = Calendario::lastGiornata()->first();
 
         $classifica = Classifica::getClassifica();
 
-        if($next->first())
+
+        if(!$next->isEmpty())
             $nextData = $next->first()->dataGiornata;
 
-        if($last->first())
+        if(!$last->isEmpty())
             $nextLimite =  $next->first()->dataConsegna;
 
         $dg = false;
@@ -75,8 +76,8 @@ class HomeController extends Controller {
             case 0:
                 return view('pages.home', ['player_count' => Player::count(),
                 'team_count' => Team::count(),
-                'nextMatches' => $next->get(),
-                'lastMatches' => $last->get(),
+                'nextMatches' => $next,
+                'lastMatches' => $last,
                 'nextGiornata' => $nextGiornata,
                 'lastGiornata' => $lastGiornata,
                 'classifica' => $classifica,
@@ -93,7 +94,10 @@ class HomeController extends Controller {
                     'lastMatches' => $last,
                     'nextGiornata' => $nextGiornata,
                     'lastGiornata' => $lastGiornata,
-                    'classifica' => $classifica,]);
+                    'classifica' => $classifica,
+                    'dataGiornata' => $dg,
+                    'dataConsegna' => $dc
+                ]);
                 break;
 
         }
