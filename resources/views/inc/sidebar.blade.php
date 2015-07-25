@@ -66,6 +66,7 @@
             <li class="{{ Menu::activeMenu('import') }}"><a href="{{ url('admin/import') }}"><i class="fa fa-circle-o"></i> Importa</a></li>
             <li><a href="#"><i class="fa fa-circle"></i> Esporta</a></li>
             <li class="{{ Menu::activeMenu('utility/backup') }}"><a href="{{ url('admin/utility/backup') }}"><i class="fa fa-circle-o"></i> Backup</a></li>
+            <li class="{{ Menu::activeMenu('utility/database') }}"><a href="{{ url('admin/utility/database') }}"><i class="fa fa-circle-o"></i> Database</a></li>
           </ul>
         </li>
 

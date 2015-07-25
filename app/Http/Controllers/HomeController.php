@@ -38,16 +38,23 @@ class HomeController extends Controller {
 	public function index()
 	{
 
-        $next = Calendario::nextMatches()->get();
-        $last = Calendario::lastMatches()->get();
+        $nextData = false;
+        $nextLimite = false;
+        
+        $next = Calendario::nextMatches();
+        $last = Calendario::lastMatches();
 
         $nextGiornata = Calendario::nextGiornata()->first();
         $lastGiornata = Calendario::lastGiornata()->first();
 
         $classifica = Classifica::getClassifica();
 
-        $nextData = $next->first()->dataGiornata;
-        $nextLimite =  $next->first()->dataConsegna;
+        if($next->first())
+            $nextData = $next->first()->dataGiornata;
+
+        if($last->first())
+            $nextLimite =  $next->first()->dataConsegna;
+
         $dg = false;
         $dc = false;
 
@@ -68,8 +75,8 @@ class HomeController extends Controller {
             case 0:
                 return view('pages.home', ['player_count' => Player::count(),
                 'team_count' => Team::count(),
-                'nextMatches' => $next,
-                'lastMatches' => $last,
+                'nextMatches' => $next->get(),
+                'lastMatches' => $last->get(),
                 'nextGiornata' => $nextGiornata,
                 'lastGiornata' => $lastGiornata,
                 'classifica' => $classifica,

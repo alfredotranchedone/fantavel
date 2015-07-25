@@ -30,6 +30,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function()
         'calendario' => 'Admin\CalendarioController',
         'rose' => 'Admin\RoseController',
         'utility/backup' => 'Admin\BackupController',
+        'utility' => 'Admin\UtilityController',
         'ajax' => 'Admin\AjaxController'
     ]);
 
