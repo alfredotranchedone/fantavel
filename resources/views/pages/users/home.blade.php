@@ -47,10 +47,10 @@
 
       <div class="col-md-3">
           <div class="info-box">
-              <span class="info-box-icon bg-teal"><i class="fa fa-male"></i></span>
+              <span class="info-box-icon bg-teal"><i class="fa fa-heartbeat"></i></span>
               <div class="info-box-content">
-                  <span class="info-box-text">Calciatori</span>
-                  <span class="info-box-number size30">{{ $player_count }}</span>
+                  <span class="info-box-text">Risultato Medio</span>
+                  <span class="info-box-number size30">{{ $media }}</span>
               </div><!-- /.info-box-content -->
           </div>
       </div>

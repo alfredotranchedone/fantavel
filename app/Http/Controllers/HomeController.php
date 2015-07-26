@@ -3,6 +3,7 @@
 use App\Calendario;
 use App\Classifica;
 use App\Player;
+use App\Result;
 use App\Team;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -38,6 +39,8 @@ class HomeController extends Controller {
 	public function index()
 	{
 
+        $user = Auth::user();
+
         $nextData = 0;
         $nextLimite = 0;
 
@@ -71,7 +74,7 @@ class HomeController extends Controller {
                 ->format('d/m/Y H:i:s');
         }
 
-        switch (Auth::user()->levels_level) {
+        switch ($user->levels_level) {
 
             case 0:
                 return view('pages.home', ['player_count' => Player::count(),
@@ -88,6 +91,10 @@ class HomeController extends Controller {
 
             case 100:
             default:
+
+                $user_team_id = Team::UserTeamId($user->id)->first()->id;
+                $media = Result::AverageResult($user_team_id)->first()->media;
+
                 return view('pages.users.home', ['player_count' => Player::count(),
                     'team_count' => Team::count(),
                     'nextMatches' => $next,
@@ -96,7 +103,8 @@ class HomeController extends Controller {
                     'lastGiornata' => $lastGiornata,
                     'classifica' => $classifica,
                     'dataGiornata' => $dg,
-                    'dataConsegna' => $dc
+                    'dataConsegna' => $dc,
+                    'media' => $media
                 ]);
                 break;
 

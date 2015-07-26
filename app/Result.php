@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 class Result extends Model {
 
@@ -12,6 +13,11 @@ class Result extends Model {
 
     protected $table = 'results';
 
+    public function scopeAverageResult($query, $teamId){
+        return $query
+            ->select(DB::raw('avg(result) as media'))
+            ->where('teams_id',$teamId);
+    }
 
 
 }

@@ -30,4 +30,12 @@ class Team extends Model {
             ->where('user_id',$userId);
     }
 
+    public function scopeUserTeamId($query, $userId){
+        return $query
+            ->select(['id'])
+            ->where('user_id',$userId);
+    }
+
+
+
 }

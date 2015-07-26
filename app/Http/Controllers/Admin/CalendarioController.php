@@ -43,7 +43,7 @@ class CalendarioController extends Controller {
             if ($f->isValid()) :
 
                 // $name = date('Y.m.d_') . $f->getClientOriginalName();
-                $name = 'giornata_'. $this->giornata .'_'. date('Y.m.d') .'xls';
+                $name = 'giornata_'. $this->giornata .'_'. date('Y-m-d') .'.xls';
 
                 $f->move($destinationPath,$name);
 
