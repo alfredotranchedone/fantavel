@@ -515,6 +515,21 @@ class CalendarioController extends Controller {
     private function aggiornaClassifica($giornata,$stagioneId=0)
     {
 
+        /**
+         * TODO
+         * Duplicare rows ultima classifica se giornata > 0 e poi proseguire
+         * regolarmente con le operazioni sulla nuove righe duplicate
+         */
+        /*
+        if($giornata > 0) {
+            // recupera ultima giornata
+            $calendario_last_giornata = Calendario::LastGiornata()->first()->giornata;
+
+            // duplica classifica corrente
+            $classifica_duplica = Classifica::where('giornata',$calendario_last_giornata)->replicate()->save();
+        }
+        */
+
         // recupera calendario e risultati
         $calendario = Calendario::matches($giornata)->get();
 
