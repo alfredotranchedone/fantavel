@@ -515,6 +515,29 @@ class CalendarioController extends Controller {
     private function aggiornaClassifica($giornata,$stagioneId=0)
     {
 
+        if($giornata > 0) {
+            // recupera ultima giornata
+            $calendario_last_giornata = $giornata - 1;
+
+            // duplica classifica corrente
+            $classifica_duplica = Classifica::where('giornata',$calendario_last_giornata)->get();
+
+            // aggiorna giornata nella riga duplicata
+            foreach($classifica_duplica as $c){
+                $new = $c->replicate();
+                $new->giornata = $giornata;
+                $new->save();
+            }
+
+            // recupera classifica
+            $classifica = Classifica::where('giornata',$giornata)->get();
+
+        } else {
+            // recupera classifica
+            $classifica = Classifica::all();
+        }
+
+
         // recupera calendario e risultati
         $calendario = Calendario::matches($giornata)->get();
 
@@ -537,8 +560,8 @@ class CalendarioController extends Controller {
             // dd($giornata,$stagioneId);
 
             // Estrai dati classifica team1 e team2
-            $classificaTeam1 = Classifica::where('team_id', $team_1_id);
-            $classificaTeam2 = Classifica::where('team_id', $team_2_id);
+            $classificaTeam1 = Classifica::where('team_id', $team_1_id)->where('giornata',$giornata);
+            $classificaTeam2 = Classifica::where('team_id', $team_2_id)->where('giornata',$giornata);
 
             $t1 = $classificaTeam1->first();
             $t2 = $classificaTeam2->first();
@@ -564,7 +587,7 @@ class CalendarioController extends Controller {
                 $t1->increment('gs',$team_2_goal);
                 $t1->increment('fp',$team_1_result);
                 $classificaTeam1->update([
-                        'giornata' => $giornata,
+                        //'giornata' => $giornata,
                         'stagione_id' => $stagioneId,
                     ]);
 
@@ -578,12 +601,29 @@ class CalendarioController extends Controller {
                 $t2->increment('gs',$team_1_goal);
                 $t2->increment('fp',$team_2_result);
                 $classificaTeam2->update([
-                        'giornata' => $giornata,
+                        //'giornata' => $giornata,
                         'stagione_id' => $stagioneId,
                     ]);
 
         }
 
+
+        /* Aggiorna posizioni in classifca */
+        $pos = Classifica::getClassifica();
+        if($pos) {
+            // setta posizione
+            $posizione = 1;
+            foreach ($pos as $p) {
+
+                // aggiorna posizione
+                $p->posizione = $posizione;
+                $p->save();
+
+                // incrementa posizione
+                $posizione++;
+
+            }
+        }
 
 
     }
