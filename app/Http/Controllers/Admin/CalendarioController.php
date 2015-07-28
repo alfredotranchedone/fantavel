@@ -608,7 +608,22 @@ class CalendarioController extends Controller {
         }
 
 
-        
+        /* Aggiorna posizioni in classifca */
+        $pos = Classifica::getClassifica();
+        if($pos) {
+            // setta posizione
+            $posizione = 1;
+            foreach ($pos as $p) {
+
+                // aggiorna posizione
+                $p->posizione = $posizione;
+                $p->save();
+
+                // incrementa posizione
+                $posizione++;
+
+            }
+        }
 
 
     }
