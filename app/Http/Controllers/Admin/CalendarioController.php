@@ -427,9 +427,9 @@ class CalendarioController extends Controller {
                 $mp = $m['punti'];
                 $ruolo = $m['ruolo'];
 
+
                 // gestisci sostituzione
                 if($mp == 0 ) {
-
                     /*
                     echo "s$sostituzioni";
                     echo "NO ";

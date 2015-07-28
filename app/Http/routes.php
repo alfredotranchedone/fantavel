@@ -13,6 +13,11 @@
 
 Route::get('/', 'HomeController@index');
 
+/* BUGFIX x ARUBA!!! */
+Route::get('/app', function(){
+	return redirect('app/public');
+});
+
 Route::get('home', 'HomeController@index');
 
 

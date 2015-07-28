@@ -65,7 +65,7 @@
                                             padding-top: 15px;
                                             border-top: 1px solid #f3e5f5;
                                             text-align: right">
-                                    <a href="{{ url('/password/email') }}"><i class="fa fa-angle-right fa-fw"></i> Password dimenticata?</a>
+                                    <!-- <a href="{{ url('/password/email') }}"><i class="fa fa-angle-right fa-fw"></i> Password dimenticata?</a> -->
                                 </small>
 							</div>
 						</div>

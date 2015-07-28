@@ -39,7 +39,7 @@
                     <div class="row">
                       <div class="col-md-6">
                           <div class="pull-right">
-                              <a href="{{ url('admin/rose') }}" class="btn btn-default btn-sm"><i class="fa fa-chevron-left fa-fw"></i> Torna a Squadre</a>
+                              <a href="{{ url('user') }}" class="btn btn-default btn-sm"><i class="fa fa-chevron-left fa-fw"></i> Torna a Home</a>
                           </div>
 
                           <h4><i class="fa fa-group fa-fw"></i> {{ $team->name }}</h4>
