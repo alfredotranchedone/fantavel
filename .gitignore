@@ -103,3 +103,5 @@ storage/_database.sqlite
 public/uploads/risultati/giornata_4_2015-07-28.xls
 
 public/uploads/risultati/giornata_5_2015-07-28.xls
+
+.idea/blade.xml
