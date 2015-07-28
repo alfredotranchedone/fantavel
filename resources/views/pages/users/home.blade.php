@@ -59,10 +59,20 @@
 
       <div class="col-md-3">
           <div class="info-box">
-              <span class="info-box-icon bg-yellow"><i class="fa fa-line-chart"></i></span>
+              <span class="info-box-icon bg-yellow">
+                  <i class="fa fa-line-chart"></i>
+              </span>
               <div class="info-box-content">
                   <span class="info-box-text">Andamento</span>
-                  <span class="info-box-number size30"><i class="fa fa-arrow-up"></i> </span>
+                  <span class="info-box-number size30">
+                    @if($variazione_andamento == 1)
+                      <i class="fa fa-arrow-up text-green"></i>
+                    @elseif($variazione_andamento == -1)
+                      <i class="fa fa-arrow-down text-red"></i>
+                    @elseif($variazione_andamento == 0)
+                      <i class="fa fa-arrows-h"></i>
+                    @endif
+                  </span>
               </div><!-- /.info-box-content -->
           </div>
       </div>

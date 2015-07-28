@@ -41,4 +41,33 @@ class Classifica extends Model {
 
     }
 
+
+    /**
+     *
+     * Recupera la posizione delle ultime 2 giornate (a partire dalla giornata indicata)
+     * Se giornata=null recupera l'ultima giornata
+     *
+     * @param $query
+     * @param $team
+     * @param null $giornata
+     * @return mixed
+     */
+    public function scopeAndamento($query,$team,$giornata=null)
+    {
+
+        // se giornata iniziale non è definita, recupera ultima giornata
+        if(!$giornata)
+            $giornata = Calendario::lastGiornata()->first()->giornata;
+
+        $penultima = $giornata - 1;
+
+        return $query
+            ->select('posizione')
+            ->where('team_id',$team)
+            ->whereIn('giornata',[$giornata,$penultima])
+            ->orderBy('giornata','DESC')
+            ->get();
+
+    }
+
 }

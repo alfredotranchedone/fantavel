@@ -85,6 +85,29 @@ class HomeController extends Controller {
                 $user_team_id = Team::UserTeamId($user->id)->first()->id;
                 $media = Result::AverageResult($user_team_id)->first()->media;
 
+                /* controlla andamento */
+                    $andamento = Classifica::andamento($user_team_id)->toArray();
+
+                    // var da mostrare in home
+                    $posizione_precedente = false;
+
+                    // andamento stabile - DEFAULT
+                    $variazione_andamento = 0;
+
+                    if(count($andamento)>1){
+
+                        $posizione_precedente = $andamento[0]['posizione'];
+
+                        if($andamento[1]['posizione'] > $andamento[0]['posizione']){
+                            // andamento positivo
+                            $variazione_andamento = 1;
+                        } elseif($andamento[1]['posizione'] < $andamento[0]['posizione']) {
+                            // andamento negativo
+                            $variazione_andamento = -1;
+                        }
+                    }
+
+
                 return view('pages.users.home', ['player_count' => Player::count(),
                     'team_count' => Team::count(),
                     'nextMatches' => $next,
@@ -94,7 +117,9 @@ class HomeController extends Controller {
                     'classifica' => $classifica,
                     'dataGiornata' => $dg,
                     'dataConsegna' => $dc,
-                    'media' => $media
+                    'media' => $media,
+                    'variazione_andamento' => $variazione_andamento,
+                    'posizione_precedente' => $posizione_precedente
                 ]);
                 break;
 
