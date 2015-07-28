@@ -18,8 +18,12 @@ class Classifica extends Model {
         return $this->hasOne('App\Team','id','team_id');
     }
 
-    public function scopeGetClassifica($query)
+    public function scopeGetClassifica($query,$giornata=null)
     {
+
+        // se giornata non è definita, recupera ultima giornata
+        if(!$giornata)
+            $giornata = Calendario::lastGiornata()->first()->giornata;
 
         return $query
             ->select(
@@ -28,6 +32,7 @@ class Classifica extends Model {
                     (gf - gs) as differenzaReti
                     ')
             )
+            ->where('giornata',$giornata)
             ->orderBy('punti','DESC')
             ->orderBy('vinte','DESC')
             ->orderBy('differenzaReti','DESC')

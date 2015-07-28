@@ -24,6 +24,7 @@ class CreateClassificaTable extends Migration {
             $table->integer('giornata')->default(0);
             $table->integer('stagione_id')->default(0)->unsigned();;
             $table->float('fp')->default(0);
+            $table->string('posizione')->default(0);
 			$table->timestamps();
             $table->softDeletes();
 

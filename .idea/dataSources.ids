@@ -40,6 +40,7 @@
       <column name="created_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
       <column name="updated_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
       <column name="deleted_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="posizione" sqlType="TEXT" precision="2000000000" scale="10" nullable="false" jdbcType="12" def="JzAn"/>
       <primary-key columns="id"/>
       <foreign-key name="#FAKE_classifica_1" columns="stagione_id" ref-table="stagioni" ref-schema="" ref-catalog="" ref-columns="id" update-rule="0" delete-rule="0" deferrability="1"/>
       <foreign-key name="#FAKE_classifica_2" columns="team_id" ref-table="teams" ref-schema="" ref-catalog="" ref-columns="id" update-rule="0" delete-rule="0" deferrability="1"/>

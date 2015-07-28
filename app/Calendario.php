@@ -277,7 +277,8 @@ class Calendario extends Model {
         */
         return $query
             ->select(DB::raw('
-                max(DISTINCT(giornata)) AS giornata
+                max(DISTINCT(giornata)) AS giornata,
+                dataGiornata
             '))
             ->whereRaw('calendario.giornata IN ( SELECT DISTINCT(giornata) FROM results )');
         ;
