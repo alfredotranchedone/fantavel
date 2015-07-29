@@ -29,6 +29,16 @@ class CalendarioController extends Controller {
 	}
 
 
+    public function getMatch($calendarioId)
+    {
+        $match = Calendario::where('id',$calendarioId)->get();
+        debug($match);
+        echo 'ok';
+    }
+
+
+
+
     public function postUploadRisultati(Request $request){
 
         if( $request->input('confirmText') == 'UPLOAD'):

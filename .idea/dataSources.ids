@@ -4,5 +4,184 @@
     <database-info product="SQLite" version="3.8.7" jdbc-version="2.1" driver-name="SQLiteJDBC" driver-version="native"/>
     <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed"/>
     <schema name="" catalog=""/>
+    <table name="calendario" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="giornata" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4" def="JzAn"/>
+      <column name="stagione_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4" def="JzAn"/>
+      <column name="team_1_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="team_2_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="modulo_1_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4" def="JzAn"/>
+      <column name="modulo_2_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4" def="JzAn"/>
+      <column name="result_team_1_id" sqlType="FLOAT" precision="2000000000" scale="10" nullable="true" jdbcType="6"/>
+      <column name="result_team_2_id" sqlType="FLOAT" precision="2000000000" scale="10" nullable="true" jdbcType="6"/>
+      <column name="created_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="updated_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="deleted_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="dataGiornata" sqlType="VARCHAR" precision="2000000000" scale="10" nullable="false" jdbcType="12" def="JzAn"/>
+      <column name="dataConsegna" sqlType="VARCHAR" precision="2000000000" scale="10" nullable="false" jdbcType="12" def="JzAn"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_calendario_1" columns="stagione_id" ref-table="stagioni" ref-schema="" ref-catalog="" ref-columns="id" update-rule="0" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_calendario_2" columns="modulo_2_id" ref-table="moduli" ref-schema="" ref-catalog="" ref-columns="id" update-rule="0" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_calendario_3" columns="modulo_1_id" ref-table="moduli" ref-schema="" ref-catalog="" ref-columns="id" update-rule="0" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_calendario_4" columns="team_2_id" ref-table="teams" ref-schema="" ref-catalog="" ref-columns="id" update-rule="0" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_calendario_5" columns="team_1_id" ref-table="teams" ref-schema="" ref-catalog="" ref-columns="id" update-rule="0" delete-rule="3" deferrability="1"/>
+    </table>
+    <table name="classifica" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="team_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4" def="JzAn"/>
+      <column name="vinte" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4" def="JzAn"/>
+      <column name="nulle" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4" def="JzAn"/>
+      <column name="perse" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4" def="JzAn"/>
+      <column name="gf" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4" def="JzAn"/>
+      <column name="gs" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4" def="JzAn"/>
+      <column name="giornata" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4" def="JzAn"/>
+      <column name="stagione_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4" def="JzAn"/>
+      <column name="fp" sqlType="FLOAT" precision="2000000000" scale="10" nullable="false" jdbcType="6" def="JzAn"/>
+      <column name="created_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="updated_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="deleted_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="posizione" sqlType="TEXT" precision="2000000000" scale="10" nullable="false" jdbcType="12" def="JzAn"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_classifica_1" columns="stagione_id" ref-table="stagioni" ref-schema="" ref-catalog="" ref-columns="id" update-rule="0" delete-rule="0" deferrability="1"/>
+      <foreign-key name="#FAKE_classifica_2" columns="team_id" ref-table="teams" ref-schema="" ref-catalog="" ref-columns="id" update-rule="0" delete-rule="0" deferrability="1"/>
+    </table>
+    <table name="formations" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="teams_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4" def="JzAn"/>
+      <column name="players_codice" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4" def="JzAn"/>
+      <column name="numero_maglia" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="created_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="updated_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="giornata_id" sqlType="INT" precision="2000000000" scale="10" nullable="false" jdbcType="4" def="MA=="/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_formations_1" columns="players_codice" ref-table="players" ref-schema="" ref-catalog="" ref-columns="id" update-rule="0" delete-rule="0" deferrability="1"/>
+      <foreign-key name="#FAKE_formations_2" columns="teams_id" ref-table="teams" ref-schema="" ref-catalog="" ref-columns="id" update-rule="0" delete-rule="0" deferrability="1"/>
+    </table>
+    <table name="levels" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="name" sqlType="VARCHAR" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="level" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <exported-key name="#FAKE_users_1" table="users" schema="" catalog="" columns="levels_level"/>
+      <index name="levels_level_unique" unique="true" columns="level"/>
+    </table>
+    <table name="migrations" schema="" catalog="" type="TABLE">
+      <column name="migration" sqlType="VARCHAR" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="batch" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+    </table>
+    <table name="moduli" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="name" sqlType="VARCHAR" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="modificatore" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="deleted_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <exported-key name="#FAKE_calendario_2" table="calendario" schema="" catalog="" columns="modulo_2_id"/>
+      <exported-key name="#FAKE_calendario_3" table="calendario" schema="" catalog="" columns="modulo_1_id"/>
+      <exported-key name="#FAKE_results_1" table="results" schema="" catalog="" columns="modulo_id"/>
+    </table>
+    <table name="password_resets" schema="" catalog="" type="TABLE">
+      <column name="email" sqlType="VARCHAR" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="token" sqlType="VARCHAR" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="created_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+    </table>
+    <table name="players" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="nominativo" sqlType="VARCHAR" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="ruolo" sqlType="VARCHAR" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="codice" sqlType="VARCHAR" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="teams_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4" def="JzAn"/>
+      <column name="created_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="updated_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_players_1" columns="teams_id" ref-table="team" ref-schema="" ref-catalog="" ref-columns="id" update-rule="0" delete-rule="3" deferrability="1"/>
+      <exported-key name="#FAKE_formations_1" table="formations" schema="" catalog="" columns="players_codice"/>
+      <exported-key name="#FAKE_punteggi_1" table="punteggi" schema="" catalog="" columns="stagione_id"/>
+      <exported-key name="#FAKE_punteggi_2" table="punteggi" schema="" catalog="" columns="players_codice"/>
+    </table>
+    <table name="punteggi" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="players_codice" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4" def="JzAn"/>
+      <column name="giornata" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4" def="JzAn"/>
+      <column name="stagione_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4" def="JzAn"/>
+      <column name="voto" sqlType="FLOAT" precision="2000000000" scale="10" nullable="true" jdbcType="6"/>
+      <column name="quotazione" sqlType="FLOAT" precision="2000000000" scale="10" nullable="true" jdbcType="6"/>
+      <column name="stato" sqlType="FLOAT" precision="2000000000" scale="10" nullable="true" jdbcType="6"/>
+      <column name="magic_punti" sqlType="FLOAT" precision="2000000000" scale="10" nullable="true" jdbcType="6"/>
+      <column name="gol" sqlType="FLOAT" precision="2000000000" scale="10" nullable="true" jdbcType="6"/>
+      <column name="ammonizione" sqlType="FLOAT" precision="2000000000" scale="10" nullable="true" jdbcType="6"/>
+      <column name="espulsione" sqlType="FLOAT" precision="2000000000" scale="10" nullable="true" jdbcType="6"/>
+      <column name="rigori" sqlType="FLOAT" precision="2000000000" scale="10" nullable="true" jdbcType="6"/>
+      <column name="autogol" sqlType="FLOAT" precision="2000000000" scale="10" nullable="true" jdbcType="6"/>
+      <column name="assist" sqlType="FLOAT" precision="2000000000" scale="10" nullable="true" jdbcType="6"/>
+      <column name="created_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="updated_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_punteggi_1" columns="stagione_id" ref-table="players" ref-schema="" ref-catalog="" ref-columns="id" update-rule="0" delete-rule="0" deferrability="1"/>
+      <foreign-key name="#FAKE_punteggi_2" columns="players_codice" ref-table="players" ref-schema="" ref-catalog="" ref-columns="id" update-rule="0" delete-rule="0" deferrability="1"/>
+    </table>
+    <table name="results" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="giornata" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="stagione_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4" def="JzAn"/>
+      <column name="teams_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4" def="JzAn"/>
+      <column name="result" sqlType="FLOAT" precision="2000000000" scale="10" nullable="true" jdbcType="6"/>
+      <column name="modulo_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4" def="JzAn"/>
+      <column name="goal" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
+      <column name="created_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="updated_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="deleted_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_results_1" columns="modulo_id" ref-table="moduli" ref-schema="" ref-catalog="" ref-columns="id" update-rule="0" delete-rule="0" deferrability="1"/>
+      <foreign-key name="#FAKE_results_2" columns="teams_id" ref-table="team" ref-schema="" ref-catalog="" ref-columns="id" update-rule="0" delete-rule="0" deferrability="1"/>
+      <foreign-key name="#FAKE_results_3" columns="stagione_id" ref-table="stagioni" ref-schema="" ref-catalog="" ref-columns="id" update-rule="0" delete-rule="0" deferrability="1"/>
+    </table>
+    <table name="sqlite_sequence" schema="" catalog="" type="TABLE">
+      <column name="name" sqlType="" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="seq" sqlType="" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+    </table>
+    <table name="stagioni" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="name" sqlType="VARCHAR" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="inizio" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="fine" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="created_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="updated_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="deleted_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <exported-key name="#FAKE_calendario_1" table="calendario" schema="" catalog="" columns="stagione_id"/>
+      <exported-key name="#FAKE_classifica_1" table="classifica" schema="" catalog="" columns="stagione_id"/>
+      <exported-key name="#FAKE_results_3" table="results" schema="" catalog="" columns="stagione_id"/>
+    </table>
+    <table name="teams" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="name" sqlType="VARCHAR" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="user_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="created_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="updated_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="deleted_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="modulo_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_teams_1" columns="user_id" ref-table="users" ref-schema="" ref-catalog="" ref-columns="id" update-rule="0" delete-rule="3" deferrability="1"/>
+      <exported-key name="#FAKE_calendario_4" table="calendario" schema="" catalog="" columns="team_2_id"/>
+      <exported-key name="#FAKE_calendario_5" table="calendario" schema="" catalog="" columns="team_1_id"/>
+      <exported-key name="#FAKE_classifica_2" table="classifica" schema="" catalog="" columns="team_id"/>
+      <exported-key name="#FAKE_formations_2" table="formations" schema="" catalog="" columns="teams_id"/>
+    </table>
+    <table name="users" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="name" sqlType="VARCHAR" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="email" sqlType="VARCHAR" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="password" sqlType="VARCHAR" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="levels_level" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="attivo" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="remember_token" sqlType="VARCHAR" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="created_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="updated_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="deleted_at" sqlType="DATETIME" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_users_1" columns="levels_level" ref-table="levels" ref-schema="" ref-catalog="" ref-columns="level" update-rule="0" delete-rule="3" deferrability="1"/>
+      <exported-key name="#FAKE_teams_1" table="teams" schema="" catalog="" columns="user_id"/>
+      <index name="users_email_unique" unique="true" columns="email"/>
+    </table>
   </data-source>
 </component>

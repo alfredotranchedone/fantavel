@@ -18,7 +18,11 @@ class CreateFormationsTable extends Migration {
 			$table->integer('teams_id')->unsigned()->default(0);
 			$table->integer('players_codice')->unsigned()->default(0);
 			$table->integer('numero_maglia');
+			$table->integer('giornata_id')->default(0);
 			$table->timestamps();
+
+            $table->dropIndex('formations_giornata_id_index');
+            $table->index('giornata_id');
 
             $table->dropForeign('formations_teams_id_foreign');
             $table->foreign('teams_id')
