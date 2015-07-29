@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Calendario;
 use App\Classifica;
 use App\Formation;
 use App\Http\Requests;
@@ -34,6 +35,8 @@ class RoseController extends Controller {
 
     public function getFormazione($teamId){
 
+        $prossima_giornata = Calendario::nextGiornata()->first()->giornata;
+
         $players = Player::where('teams_id',$teamId)->get();
         $team = Team::find($teamId,['name','modulo_id']);
         $formazione = Formation::where('teams_id',$teamId)
@@ -48,6 +51,7 @@ class RoseController extends Controller {
             'team' => $team,
             'formazione' => $formazione,
             'moduli' => $moduli,
+            'prossima_giornata' => $prossima_giornata
         ]);
 
     }
@@ -56,30 +60,25 @@ class RoseController extends Controller {
 
         //$codici = $request->get('codice');
         $teamId = $request->get('team_id');
+        $prossima_giornata = $request->get('prossima_giornata');
         $numero_maglia = $request->get('numero_maglia');
-        $cleanData = Formation::where('teams_id', '=', $teamId)->delete();
+
+        $cleanData = Formation::where('teams_id', $teamId)
+            ->where('giornata_id',$prossima_giornata)
+            ->delete();
+
+
 
         foreach($numero_maglia as $numero=>$codice){
 
             $player = new Formation();
             $player->teams_id = $teamId;
+            $player->giornata_id = $prossima_giornata;
             $player->players_codice = $codice;
             $player->numero_maglia = $numero;
             $player->save();
 
-            /*
-            $player = Formation::updateOrCreate(
-               [ 'players_codice' => $codice],
-               [
-                   'teams_id' => $teamId,
-                   'players_codice' => $codice,
-                   'numero_maglia' => $numero_assegnato
-               ]
-            );
-            */
-
         }
-
 
         return redirect('admin/rose/formazione/'.$teamId)
             ->with('msg','Formazione Salvata')

@@ -46,7 +46,7 @@
 
                           <hr/>
 
-                          <form action="{{ url('admin/rose/save-modulo/'.$teamId) }}" method="post">
+                          <form id="frmModulo" action="{{ url('admin/rose/save-modulo/'.$teamId) }}" method="post">
                               <input type="hidden" value="{{ $teamId }}" name="team_id" />
                               <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
@@ -97,6 +97,7 @@
                             <div class="col-md-6">
 
                                 <input type="hidden" value="{{ $teamId }}" name="team_id" />
+                                <input type="hidden" value="{{ $prossima_giornata }}" name="prossima_giornata" />
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                                 <table class="table table-striped formazione">

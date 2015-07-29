@@ -30,16 +30,16 @@ table.formazione .tshirtContainer{
     position:relative;
 }
 table.formazione .tshirtContainer > img{
-    width: 50px
+    width: 40px
 }
 table.formazione .tshirtContainer div {
     position: absolute;
-    top: 6px;
+    top: 3px;
     left: 0;
-    width: 50px;
+    width: 40px;
     text-align: center;
     font-weight: bold;
-    font-size: 15px;
+    font-size: 12px;
     color: #f5f5f5;
 }
 table.formazione td.P { background: #EDF2B8;}
