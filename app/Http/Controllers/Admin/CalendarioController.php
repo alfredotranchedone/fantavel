@@ -36,7 +36,9 @@ class CalendarioController extends Controller {
                              select(DB::raw(
                                 'calendario.*,
                                 t1.name as team_1_nome,
-                                t2.name as team_2_nome
+                                t2.name as team_2_nome,
+                                t1.user_id as team_1_user_id,
+                                t2.user_id as team_2_user_id
                                 '
                              ))
                              ->leftJoin('teams as t1', 't1.id', '=', 'calendario.team_1_id')

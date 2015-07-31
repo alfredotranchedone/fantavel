@@ -97,7 +97,23 @@
                               @endif
                           @empty
                               <tr>
-                                  <td colspan="4">Nessun dettaglio.</td>
+                                  <td class="text-center" colspan="11" style="background: white;">
+                                      <p class="lead text-red">
+                                          La formazione per questa giornata non è stata ancora inserita.</p>
+
+                                      @if(Auth::user()->levels_level != 0)
+                                          @if(Auth::user()->id == $match->team_1_user_id)
+                                              <a href="{{ url($base_url.'/rose/formazione/'.$match->team_1_id) }}" class="btn btn-success btn-md">
+                                                  <i class="fa fa-plus fa-fw"></i> Aggiungi Formazione
+                                              </a>
+                                          @endif
+                                      @else
+                                          <a href="{{ url($base_url.'/rose/formazione/'.$match->team_1_id) }}" class="btn btn-success btn-md">
+                                              <i class="fa fa-plus fa-fw"></i> Aggiungi Formazione
+                                          </a>
+                                      @endif
+
+                                  </td>
                               </tr>
                           @endforelse
 
@@ -172,7 +188,23 @@
 
                           @empty
                               <tr>
-                                  <td colspan="4">Nessun dettaglio.</td>
+                                  <td class="text-center" colspan="11" style="background: white;">
+                                      <p class="lead text-red">
+                                          La formazione per questa giornata non è stata ancora inserita.</p>
+
+                                      @if(Auth::user()->levels_level != 0)
+                                          @if(Auth::user()->id == $match->team_2_user_id)
+                                              <a href="{{ url($base_url.'/rose/formazione/'.$match->team_2_id) }}" class="btn btn-success btn-md">
+                                                  <i class="fa fa-plus fa-fw"></i> Aggiungi Formazione
+                                              </a>
+                                          @endif
+                                      @else
+                                          <a href="{{ url($base_url.'/rose/formazione/'.$match->team_2_id) }}" class="btn btn-success btn-md">
+                                              <i class="fa fa-plus fa-fw"></i> Aggiungi Formazione
+                                          </a>
+                                      @endif
+
+                                  </td>
                               </tr>
                           @endforelse
 

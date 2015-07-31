@@ -23,7 +23,19 @@
     <div class="row">
       <div class="col-md-6">
 
-        <div class="box">
+          <?php
+          if(Auth::user()->levels_level == 0){
+              $base_url = 'admin';
+          } else {
+              $base_url = 'user';
+          }
+          ?>
+          <a href="{{ url($base_url) }}" class="btn btn-default btn-md"><i class="fa fa-home fa-fw"></i> Home</a>
+          &nbsp;
+          <a href="{{ url($base_url.'/calendario') }}" class="btn btn-default btn-md"><i class="fa fa-calendar fa-fw"></i> Calendario</a>
+
+
+          <div class="box marginTop">
             <div class="box-header with-border">
                 <i class="fa fa-flag-o fa-fw"></i>
                 <h3 class="box-title">Risultato Giornata</h3>
