@@ -121,7 +121,7 @@
                               <td>{{ $match->team1 }} - {{ $match->team2 }}</td>
                               <td>-</td>
                               <td>-</td>
-                              <td><a href="#">dettagli</a></td>
+                              <td><a href="{{ url('admin/calendario/match/'.$match->id) }}">dettagli</a></td>
                           </tr>
                           <?php $i++; ?>
                       @empty
@@ -174,7 +174,7 @@
                             <td>{{ $match->team1 }} - {{ $match->team2 }}</td>
                             <td>{{ $match->goalTeam1 }} - {{ $match->goalTeam2 }}</td>
                             <td>{{ $match->resultTeam1 }} - {{ $match->resultTeam2 }}</td>
-                            <td><a href="{{ 'admin/calendario/match/'.$match->id }}">dettagli</a></td>
+                            <td><a href="{{ url('admin/calendario/match/'.$match->id) }}">dettagli</a></td>
                         </tr>
                         <?php $i++; ?>
                     @empty

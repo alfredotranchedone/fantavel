@@ -36,14 +36,21 @@ class CalendarioController extends Controller {
                              select(DB::raw(
                                 'calendario.*,
                                 t1.name as team_1_nome,
-                                t2.name as team_2_nome'
+                                t2.name as team_2_nome
+                                '
                              ))
                              ->leftJoin('teams as t1', 't1.id', '=', 'calendario.team_1_id')
                              ->leftJoin('teams as t2', 't2.id', '=', 'calendario.team_2_id')
                              ->where('calendario.id',$calendarioId)->first();
 
-        $team_1_result = Result::where('teams_id',$match->team_1_id)->where('giornata',$match->giornata)->first();
-        $team_2_result = Result::where('teams_id',$match->team_2_id)->where('giornata',$match->giornata)->first();
+        $team_1_result = Result::leftJoin('moduli', 'moduli.id', '=', 'results.modulo_id')
+                            ->where('teams_id',$match->team_1_id)
+                            ->where('giornata',$match->giornata)
+                            ->first();
+        $team_2_result = Result::leftJoin('moduli', 'moduli.id', '=', 'results.modulo_id')
+                            ->where('teams_id',$match->team_2_id)
+                            ->where('giornata',$match->giornata)
+                            ->first();
 
         $team_1_players = Formation::
                             leftJoin('players','players.codice','=','formations.players_codice')

@@ -11,7 +11,7 @@
     Calendario
 </h1>
 <ol class="breadcrumb">
-    <li><a href="admin/"><i class="fa fa-dashboard"></i> Admin</a></li>
+    <li><a href="{{ url('admin') }}"><i class="fa fa-dashboard"></i> Admin</a></li>
     <li class="active">Mostra Calendario</li>
 </ol>
 @endsection

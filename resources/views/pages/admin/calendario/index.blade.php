@@ -11,7 +11,7 @@
     Calendario
 </h1>
 <ol class="breadcrumb">
-    <li><a href="admin/"><i class="fa fa-dashboard"></i> Admin</a></li>
+    <li><a href="{{ url('admin') }}"><i class="fa fa-dashboard"></i> Admin</a></li>
     <li class="active">Calendario</li>
 </ol>
 @endsection
@@ -145,7 +145,7 @@
                               <td>{{ $match->team1 }} - {{ $match->team2 }}</td>
                               <td>{{ $match->goalTeam1 }} - {{ $match->goalTeam2 }}</td>
                               <td>{{ $match->resultTeam1 }} - {{ $match->resultTeam2 }}</td>
-                              <td><a href="#">dettagli</a></td>
+                              <td><a href="{{ url('admin/calendario/match/'.$match->id) }}">dettagli</a></td>
                           </tr>
                           <?php $i++; ?>
                       @empty
