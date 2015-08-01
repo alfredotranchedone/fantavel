@@ -35,7 +35,7 @@
             <div class="box-body">
 
               <p>Sono presenti <b>{{ $player_count }}</b> calciatori. </p>
-              <p>Importando un nuovo file cancellerai i dati esistenti.</p>
+              <p class="text-red">Importando un nuovo file cancellerai i dati esistenti.</p>
 
               @include('pages.admin.parts.confirm_upload', ['form_action' => 'admin/import/upload'])
 

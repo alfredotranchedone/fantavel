@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Formation;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Player;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ImportController extends Controller {
@@ -30,6 +32,16 @@ class ImportController extends Controller {
 
             if ($f->isValid())
             {
+
+
+                /**
+                 * TODO aggiungere opzione per accodare o sovrascrivere i dati presenti.
+                 * Nel caso dell'accodamento, magari controllare se esistono duplicati.
+                 */
+
+                // Elimina dati presenti
+                DB::table('players')->delete();
+
                 $name = date('Y.m.d_') . $f->getClientOriginalName();
 
                 $f->move($destinationPath,$name);
@@ -64,7 +76,8 @@ class ImportController extends Controller {
                     foreach($results as $row){
                         Player::create([
                             'nominativo' => $row[1],
-                            'ruolo' => $row[3],
+                            'ruolo' => $row[3], // con trequartista
+                            // 'ruolo' => $row[4], // senza trequartista
                             'codice' => $row[0]
                         ]);
                     }
@@ -76,7 +89,10 @@ class ImportController extends Controller {
 
             }
 
-            echo 'INSERTED!';
+
+            return redirect('admin/import')
+                ->with('message', 'Importazione Eseguita Correttamente!')
+                ->with('messageType','success');
 
         else:
 

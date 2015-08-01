@@ -111,28 +111,74 @@
 
                                   <?php
                                   $arrayModulo = explode('-',$team->modulo->name);
-                                  $difesa = $arrayModulo[0];
-                                  $centrocampo = $arrayModulo[1];
-                                  $attacco = $arrayModulo[2];
+
+                                  $c_arrayModulo = count($arrayModulo);
+
+                                  //controlla se il modulo prevede il trequartista
+                                  if($c_arrayModulo == 4){
+
+                                      $difesa = $arrayModulo[0];
+                                      $centrocampo = $arrayModulo[1];
+                                      $trequarti = $arrayModulo[2];
+                                      $attacco = $arrayModulo[3];
+
+                                  } elseif($c_arrayModulo == 3){
+
+                                      $difesa = $arrayModulo[0];
+                                      $centrocampo = $arrayModulo[1];
+                                      $attacco = $arrayModulo[2];
+
+                                  }
+
 
                                   for($i=1;$i<12;$i++):
 
-                                  switch (true){
-                                      case ($i == 1):
-                                          $position = 'P';
-                                          break;
-                                      case ($i > 1 AND $i <= $difesa+1):
-                                          $position = 'D';
-                                          break;
-                                      case ($i > $difesa+1 AND $i <= $centrocampo+$difesa+1):
-                                          $position = 'C';
-                                          break;
-                                      case ($i > $centrocampo AND $i <= $centrocampo+$difesa+$attacco+1):
-                                          $position = 'A';
-                                          break;
-                                      default:
-                                          $position = '';
-                                  }
+
+
+                                     if($c_arrayModulo == 4){
+
+                                        switch (true){
+                                          case ($i == 1):
+                                              $position = 'P';
+                                              break;
+                                          case ($i > 1 AND $i <= $difesa+1):
+                                              $position = 'D';
+                                              break;
+                                          case ($i > $difesa+1 AND $i <= $centrocampo+$difesa+1):
+                                              $position = 'C';
+                                              break;
+                                          case ($i > $centrocampo AND $i <= $centrocampo+$difesa+$trequarti+1):
+                                              $position = 'T';
+                                              break;
+                                          case ($i > $trequarti AND $i <= $centrocampo+$difesa+$trequarti+$attacco+1):
+                                              $position = 'A';
+                                              break;
+                                          default:
+                                              $position = '';
+                                        }
+
+
+
+                                     } elseif($c_arrayModulo == 3) {
+
+                                         switch (true){
+                                             case ($i == 1):
+                                                 $position = 'P';
+                                                 break;
+                                             case ($i > 1 AND $i <= $difesa+1):
+                                                 $position = 'D';
+                                                 break;
+                                             case ($i > $difesa+1 AND $i <= $centrocampo+$difesa+1):
+                                                 $position = 'C';
+                                                 break;
+                                             case ($i > $centrocampo AND $i <= $centrocampo+$difesa+$attacco+1):
+                                                 $position = 'A';
+                                                 break;
+                                             default:
+                                                 $position = '';
+                                         }
+
+                                     }
 
                                   ?>
 

@@ -43,6 +43,7 @@
                               <option value="P">Portiere</option>
                               <option value="D">Difensore</option>
                               <option value="C">Centrocampista</option>
+                              <option value="T">Trequartista</option>
                               <option value="A">Attaccante</option>
                           </select>
                       </div>
