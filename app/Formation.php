@@ -19,6 +19,7 @@ class Formation extends Model {
             ->leftJoin('punteggi','punteggi.players_codice','=','formations.players_codice')
             ->leftJoin('players','players.codice','=','formations.players_codice')
             ->where('formations.numero_maglia','!=',0)
+            ->where('formations.giornata_id',$giornataId)
             ->where('punteggi.giornata',$giornataId)
             ;
 

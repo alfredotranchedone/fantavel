@@ -230,6 +230,7 @@ class Calendario extends Model {
             ->select(DB::raw('calendario.giornata,
               calendario.dataGiornata,
               calendario.dataConsegna,
+              calendario.id,
               t1.name as team1,
               t2.name as team2,
               r1.result as resultTeam1,
@@ -294,6 +295,7 @@ class Calendario extends Model {
 
         return $query
             ->select(DB::raw('
+                  calendario.id,
                   calendario.giornata,
                   calendario.team_1_id,
                   calendario.team_2_id,

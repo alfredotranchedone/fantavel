@@ -37,17 +37,26 @@ class HomeController extends Controller {
         $next = Calendario::nextMatches()->get();
         $last = Calendario::lastMatches()->get();
 
+        if( $next->isEmpty() ){
+            //dd('campionato finito');
+        }
         $nextGiornata = Calendario::nextGiornata()->first();
         $lastGiornata = Calendario::lastGiornata()->first();
 
         $classifica = Classifica::getClassifica();
 
 
-        if(!$next->isEmpty())
+        if(!$next->isEmpty()) {
+
             $nextData = $next->first()->dataGiornata;
 
-        if(!$last->isEmpty())
-            $nextLimite =  $next->first()->dataConsegna;
+            if(!$last->isEmpty())
+                $nextLimite =  $next->first()->dataConsegna;
+
+        } else {
+            $nextData = false;
+        }
+
 
         $dg = false;
         $dc = false;

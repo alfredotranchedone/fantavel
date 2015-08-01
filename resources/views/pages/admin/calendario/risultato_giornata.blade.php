@@ -66,7 +66,7 @@
                             <td>{{ $match->team1 }} - {{ $match->team2 }}</td>
                             <td>{{ $match->goal1 }} - {{ $match->goal2 }}</td>
                             <td>{{ $match->resultTeam1 }} - {{ $match->resultTeam2 }}</td>
-                            <td><a href="#">dettagli</a></td>
+                            <td><a href="{{ url('admin/calendario/match/'.$match->id) }}">dettagli</a></td>
                         </tr>
                         <?php $i++; ?>
                     @empty

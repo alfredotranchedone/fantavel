@@ -58,7 +58,7 @@
                             <td>{{ $m['team1'] }} - {{ $m['team2'] }}</td>
                             <td>{{ $m['goalTeam1'] }} - {{ $m['goalTeam2'] }}</td>
                             <td>{{ $m['resultTeam1'] }} - {{ $m['resultTeam2'] }}</td>
-                            <td><a href="#">dettagli</a></td>
+                            <td><a href="{{ url('admin/calendario/match/'.$m['id']) }}">dettagli</a></td>
                         </tr>
                         @endforeach
                         <tr>

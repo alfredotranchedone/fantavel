@@ -167,7 +167,7 @@ class CalendarioController extends Controller {
                 // Salva i risultati
                 $this->calcolaRisultati($this->giornata,$this->stagione_id);
 
-                // TODO Aggiorna Classifica
+                // Aggiorna Classifica
                 $this->aggiornaClassifica($this->giornata,$this->stagione_id);
 
                 return redirect('admin/calendario/risultato-giornata/'.$this->giornata)
@@ -450,8 +450,62 @@ class CalendarioController extends Controller {
      */
     private function calcolaRisultati($giornata,$stagioneId = 0){
 
+        /**
+         *
+         * TODO
+         * check formazione per la giornata in corso per ogni team,
+         * se non presente duplica la precedente
+         *
+         */
+
+        // estrai teams
+        $teams = Team::all(['id']);
+
+        debug($teams);
+
+        // per ogni team...
+        $teams->each(function($t) use ($giornata){
+
+            $team_id = $t->id;
+            debug($team_id,$giornata);
+
+            // ...controlla se esiste la formazione per la giornata corrente
+            $current_formation = Formation::where('teams_id',$team_id)
+                ->where('giornata_id',$giornata)
+                ->get();
+
+            // se non esiste formazione...
+            if($current_formation->isEmpty()){
+
+                // ...recupera la precedente formazione
+                $last_formation = Formation::where('teams_id',$team_id)
+                    ->where('giornata_id',function($q) use ($giornata, $team_id)
+                    {
+                        $q->select('giornata_id')
+                            ->distinct()
+                            ->from('formations')
+                            ->where('numero_maglia','!=',0)
+                            ->where('teams_id',$team_id)
+                            ->orderBy('giornata_id','desc');
+                    })
+                    ->get();
+
+
+                // duplica la formazione, ma aggiorna la giornata!
+                $last_formation->each(function($l) use($giornata) {
+                    $new = $l->replicate();
+                    $new->giornata_id = $giornata;
+                    $new->save();
+                });
+
+            }
+
+        });
+
         // estrai i punteggi dei titolari della giornata in corso
         $titolari = Formation::titolari($giornata)->get();
+
+        debug($giornata,$titolari);
 
         // raggruppa i titolari per squadra (teams_id) e numero maglia
         $titolariByTeam = [];
