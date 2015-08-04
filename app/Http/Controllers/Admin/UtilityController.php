@@ -41,7 +41,7 @@ class UtilityController extends Controller {
         switch($action){
             case 'reset':
                 if($this->resetTable($tbl)){
-                    return redirect('utility/database')
+                    return redirect('admin/utility/database')
                         ->with('message', 'LE TABELLE SONO STATE SVUOTATE!')
                         ->with('messageType','warning');
                 }
