@@ -21,14 +21,86 @@
 
 @section('page-content')
 
+
+    <h2><i class="fa fa-group fa-fw"></i> {{ $team->name }}</h2>
+
+    <hr style="border-color: #fff"/>
+
+
     <div class="row">
 
         <div class="col-md-12">
 
+            <div class="row">
+                <div class="col-md-6 col-xs-12 col-sm-12">
+
+                    <div class="box collapsed-box">
+                        <div class="box-header with-border">
+                            <i class="fa fa-diamond fa-fw"></i>
+                            <h3 class="box-title">Gestione Modulo</h3>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" data-widget="collapse">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                        </div><!-- /.box-header -->
+                        <div class="box-body">
+
+                            <table class="table table-condensed table-bordered">
+                                <tr>
+                                    <th width="35%">Modulo Corrente:</th>
+                                    <td>{{ $team->modulo->name or '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Diff. Punteggio:</th>
+                                    <td>{{ $team->modulo->modificatore or '-' }}</td>
+                                </tr>
+                            </table>
+
+                            <form class="marginTop" id="frmModulo" action="{{ url('admin/rose/save-modulo/'.$teamId) }}" method="post">
+                                <input type="hidden" value="{{ $teamId }}" name="team_id" />
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+                                <label for="modulo">Modulo (Diff. Punteggio)</label>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <select class="form-control" name="modulo" id="modulo">
+                                                @forelse($moduli as $m)
+
+                                                    <option {{  (isset($team->modulo->name) AND ($team->modulo->name == $m->name))?'selected':'' }} value="{{ $m->id }}">
+                                                        {{ $m->name }} &nbsp; ( {{ $m->modificatore }} )
+                                                    </option>
+                                                @empty
+                                                    <option value="0">Nessun Modulo</option>
+                                                @endforelse
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button type="submit" class="btn btn-primary pull-right">
+                                            <i class="fa fa-save fa-fw"></i> Salva Modulo
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- /.row -->
+
+                            </form>
+
+                            <p>&nbsp;</p>
+
+                        </div><!-- /.box-body -->
+                    </div>
+
+                </div>
+            </div>
+
+
+
             <div class="box">
                 <div class="box-header with-border">
                   <i class="fa fa-th-large"></i>
-                  <h3 class="box-title">Gestisci Formazione</h3>
+                  <h3 class="box-title">Gestisci Formazione ({{ $team->modulo->name or '-' }})</h3>
                   <div class="box-tools pull-right">
                     <!-- Buttons, labels, and many other things can be placed here! -->
                     <!-- Here is a label for example -->
@@ -36,52 +108,6 @@
                 </div><!-- /.box-header -->
                 <div class="box-body">
 
-                    <div class="row">
-                      <div class="col-md-6">
-                          <div class="pull-right">
-                              <a href="{{ url('admin/rose') }}" class="btn btn-default btn-sm"><i class="fa fa-chevron-left fa-fw"></i> Torna a Squadre</a>
-                          </div>
-
-                          <h4><i class="fa fa-group fa-fw"></i> {{ $team->name }}</h4>
-
-                          <hr/>
-
-                          <form id="frmModulo" action="{{ url('admin/rose/save-modulo/'.$teamId) }}" method="post">
-                              <input type="hidden" value="{{ $teamId }}" name="team_id" />
-                              <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-                              <label for="modulo">Modulo (Mod. Punteggio)</label>
-                              <div class="row">
-                                  <div class="col-md-8">
-                                      <div class="input-group">
-                                          <select class="form-control" name="modulo" id="modulo">
-                                              @forelse($moduli as $m)
-
-                                                  <option {{  (isset($team->modulo->name) AND ($team->modulo->name == $m->name))?'selected':'' }} value="{{ $m->id }}">
-                                                      {{ $m->name }} &nbsp; ( {{ $m->modificatore }} )
-                                                  </option>
-                                              @empty
-                                                  <option value="0">Nessun Modulo</option>
-                                              @endforelse
-                                          </select>
-                                      </div>
-                                  </div>
-                                  <div class="col-md-4">
-                                      <button type="submit" class="btn btn-primary pull-right">
-                                          <i class="fa fa-save fa-fw"></i> Salva Modulo
-                                      </button>
-                                  </div>
-                              </div>
-                              <!-- /.row -->
-
-                          </form>
-                      </div>
-
-                    </div><!-- /.row -->
-
-
-
-                    <hr/>
 
                     <?php
                     if(isset($team->modulo->name)):
@@ -223,7 +249,7 @@
                                           </button>
                                       </td>
                                   </tr>
-
+                                    
                                   <?php endfor; ?>
 
                                 </table>
@@ -306,11 +332,16 @@
 
                                 </table>
 
+
                             </div><!-- /.col -->
 
 
 
                         </div><!-- /.row -->
+
+                        <hr/>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-save fa-fw"></i> Salva Formazione</button>
+
 
                     </form>
 
