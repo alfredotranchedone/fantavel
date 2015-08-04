@@ -28,74 +28,73 @@
 
 
     <div class="row">
+        <div class="col-md-6 col-xs-12 col-sm-12">
 
-        <div class="col-md-12">
+            <div class="box collapsed-box">
+                <div class="box-header with-border">
+                    <i class="fa fa-diamond fa-fw"></i>
+                    <h3 class="box-title">Gestione Modulo</h3>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+                </div><!-- /.box-header -->
+                <div class="box-body">
 
-            <div class="row">
-                <div class="col-md-6 col-xs-12 col-sm-12">
+                    <table class="table table-condensed table-bordered">
+                        <tr>
+                            <th width="35%">Modulo Corrente:</th>
+                            <td>{{ $team->modulo->name or '-' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Diff. Punteggio:</th>
+                            <td>{{ $team->modulo->modificatore or '-' }}</td>
+                        </tr>
+                    </table>
 
-                    <div class="box collapsed-box">
-                        <div class="box-header with-border">
-                            <i class="fa fa-diamond fa-fw"></i>
-                            <h3 class="box-title">Gestione Modulo</h3>
-                            <div class="box-tools pull-right">
-                                <button class="btn btn-box-tool" data-widget="collapse">
-                                    <i class="fa fa-plus"></i>
+                    <form class="marginTop" id="frmModulo" action="{{ url('admin/rose/save-modulo/'.$teamId) }}" method="post">
+                        <input type="hidden" value="{{ $teamId }}" name="team_id" />
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+                        <label for="modulo">Modulo (Diff. Punteggio)</label>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <select class="form-control" name="modulo" id="modulo">
+                                        @forelse($moduli as $m)
+
+                                            <option {{  (isset($team->modulo->name) AND ($team->modulo->name == $m->name))?'selected':'' }} value="{{ $m->id }}">
+                                                {{ $m->name }} &nbsp; ( {{ $m->modificatore }} )
+                                            </option>
+                                        @empty
+                                            <option value="0">Nessun Modulo</option>
+                                        @endforelse
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-primary pull-right">
+                                    <i class="fa fa-save fa-fw"></i> Salva Modulo
                                 </button>
                             </div>
-                        </div><!-- /.box-header -->
-                        <div class="box-body">
+                        </div>
+                        <!-- /.row -->
 
-                            <table class="table table-condensed table-bordered">
-                                <tr>
-                                    <th width="35%">Modulo Corrente:</th>
-                                    <td>{{ $team->modulo->name or '-' }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Diff. Punteggio:</th>
-                                    <td>{{ $team->modulo->modificatore or '-' }}</td>
-                                </tr>
-                            </table>
+                    </form>
 
-                            <form class="marginTop" id="frmModulo" action="{{ url('admin/rose/save-modulo/'.$teamId) }}" method="post">
-                                <input type="hidden" value="{{ $teamId }}" name="team_id" />
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <p>&nbsp;</p>
 
-                                <label for="modulo">Modulo (Diff. Punteggio)</label>
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <div class="input-group">
-                                            <select class="form-control" name="modulo" id="modulo">
-                                                @forelse($moduli as $m)
-
-                                                    <option {{  (isset($team->modulo->name) AND ($team->modulo->name == $m->name))?'selected':'' }} value="{{ $m->id }}">
-                                                        {{ $m->name }} &nbsp; ( {{ $m->modificatore }} )
-                                                    </option>
-                                                @empty
-                                                    <option value="0">Nessun Modulo</option>
-                                                @endforelse
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <button type="submit" class="btn btn-primary pull-right">
-                                            <i class="fa fa-save fa-fw"></i> Salva Modulo
-                                        </button>
-                                    </div>
-                                </div>
-                                <!-- /.row -->
-
-                            </form>
-
-                            <p>&nbsp;</p>
-
-                        </div><!-- /.box-body -->
-                    </div>
-
-                </div>
+                </div><!-- /.box-body -->
             </div>
 
+        </div>
+    </div>
 
+
+    <div class="row">
+
+        <div class="col-md-12">
 
             <div class="box">
                 <div class="box-header with-border">
@@ -104,6 +103,9 @@
                   <div class="box-tools pull-right">
                     <!-- Buttons, labels, and many other things can be placed here! -->
                     <!-- Here is a label for example -->
+                      <a href="{{ url('admin/rose/assign/'.$teamId) }}" class="btn bg-purple btn-xs">
+                          <i class="fa fa-male fa-fw"></i> Rose
+                      </a>
                   </div><!-- /.box-tools -->
                 </div><!-- /.box-header -->
                 <div class="box-body">
