@@ -288,6 +288,11 @@ class CalendarioController extends Controller {
     public function getRisultatoGiornata($giornata)
 	{
 
+
+        /**
+         * TODO
+         * correggere query!!!!!!!!!!!
+         */
         $matches = Calendario::result($giornata)->get();
 
         return view('pages.admin.calendario.risultato_giornata',[
@@ -487,12 +492,6 @@ class CalendarioController extends Controller {
      */
     private function calcolaRisultati($giornata,$stagioneId = 0){
 
-        /**
-         *
-         * TODO
-         * aggiungere calcolo fattore campo
-         *
-         */
 
         // estrai teams
         $teams = Team::all(['id']);
@@ -538,6 +537,14 @@ class CalendarioController extends Controller {
 
         // estrai i punteggi dei titolari della giornata in corso
         $titolari = Formation::titolari($giornata)->get();
+
+        // controlla se è attivo il fattore campo per la giornata
+        $fc = Calendario::where('giornata',$giornata)->get();
+        if( ( ! $fc->isEmpty() ) AND ($fc->first()->fattore_campo==1) ){
+            $check_fattore_campo = true;
+        } else {
+            $check_fattore_campo = false;
+        }
 
         // raggruppa i titolari per squadra (teams_id) e numero maglia
         $titolariByTeam = [];
@@ -641,12 +648,18 @@ class CalendarioController extends Controller {
             echo 'Modulo Modificatore: '. $moduloModificatore .'</p>';
             */
 
-            // controlla se il modulo è 0, quindi è il team di casa
-            if( ($counter_team % 2) == 0){
-                $fc = Calendario::where('giornata',$giornata)->get();
-                if( ( ! $fc->isEmpty() ) AND ($fc->first()->fattore_campo==1) ){
-                    $totale_squadra = $totale_squadra + $this->fattore_campo;
-                }
+
+            // controlla se il fattore campo è abilitato. Se sì, aggiungi il mod
+            if($check_fattore_campo) {
+
+                foreach ($fc as $c) :
+                    if($team_id == $c->team_1_id):
+                        //$old_totale = $totale_squadra;
+                        $totale_squadra = $totale_squadra + $this->fattore_campo;
+                        //echo sprintf(' casa! %s %s | ', $totale_squadra + $moduloModificatore,$old_totale + $moduloModificatore);
+                    endif;
+                endforeach;
+
             }
 
             $goal_fatti = $this->calcolaGoals( $totale_squadra + $moduloModificatore );
@@ -664,6 +677,7 @@ class CalendarioController extends Controller {
             $counter_team++;
 
         endforeach;
+
 
     }
 
