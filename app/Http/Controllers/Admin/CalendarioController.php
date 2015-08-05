@@ -291,7 +291,7 @@ class CalendarioController extends Controller {
 
         /**
          * TODO
-         * correggere query!!!!!!!!!!!
+         * debug query!!!!!!!!!!!
          */
         $matches = Calendario::result($giornata)->get();
 
