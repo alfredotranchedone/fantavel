@@ -57,6 +57,7 @@ class Calendario extends Model {
                 calendario.id,
                 calendario.dataGiornata,
                 calendario.dataConsegna,
+                calendario.fattore_campo,
                 t1.name as team1,
                 t2.name as team2,
                 (SELECT min(DISTINCT(giornata))
@@ -125,6 +126,7 @@ class Calendario extends Model {
         return $query
             ->select(DB::raw('calendario.giornata,
                 calendario.id,
+                calendario.fattore_campo,
                 t1.name as team1,
                 t2.name as team2,
                 r1.result as resultTeam1,
@@ -161,6 +163,7 @@ class Calendario extends Model {
 
         return $query
             ->select(DB::raw('calendario.giornata,
+                calendario.fattore_campo,
                 t1.id as idTeam1,
                 t2.id as idTeam2,
                 t1.name as team1,
@@ -230,6 +233,7 @@ class Calendario extends Model {
             ->select(DB::raw('calendario.giornata,
               calendario.dataGiornata,
               calendario.dataConsegna,
+              calendario.fattore_campo,
               calendario.id,
               t1.name as team1,
               t2.name as team2,
@@ -299,6 +303,7 @@ class Calendario extends Model {
                   calendario.giornata,
                   calendario.team_1_id,
                   calendario.team_2_id,
+                  calendario.fattore_campo,
                   (SELECT goal FROM results WHERE results.teams_id = team_1_id) as goal1,
                   (SELECT goal FROM results WHERE results.teams_id = team_2_id) as goal2,
                   (SELECT name FROM teams WHERE teams.id = team_1_id) as team1,

@@ -61,4 +61,24 @@ class AjaxController extends Controller {
     }
 
 
+    public function postSaveFattoreCampoGiornata(Request $request){
+
+        $giornata = $request->input('giornata');
+        $fc = $request->input('fattore_campo');
+
+        DB::table('calendario')
+            ->where('giornata', $giornata)
+            ->update([
+                'fattore_campo' => $fc,
+            ]);
+
+        return response()->json([
+            'giornata' => $giornata,
+            'fattore_campo' => $fc,
+        ]);
+
+
+    }
+
+
 }

@@ -37,6 +37,8 @@
 
                 <h4>Giornata {{ $nextGiornata->giornata or '-'}}</h4>
 
+                @include('commons.info_next_giornata')
+
                 <table class="tableResult table table-bordered table-striped">
 
                     <tr>
@@ -127,6 +129,8 @@
               <div class="box-body">
 
                   <h4>Giornata {{ $lastGiornata->giornata or '-'}}</h4>
+
+                  @include('commons.info_last_giornata')
 
                   <table class="tableResult table table-bordered table-striped">
 

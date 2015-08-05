@@ -38,6 +38,14 @@
                       <h4 class="text-center"><i class="fa fa-diamond fa-fw"></i> <b>{{ $team_1_result->result or '-'}}</b></h4>
                       <h4 class="text-center"><i class="fa fa-cubes fa-fw"></i> <b>{{ $team_1_result->name or '-'}}</b> ({{ $team_1_result->modificatore or '-'}})</h4>
 
+                      <h4 class="text-center"><i class="fa fa-home fa-fw"></i>
+                          @if($match->fattore_campo == 1)
+                              <i class="fa fa-check-square-o fa-fw"></i> (+2)
+                          @else
+                              <i class="fa fa-square-o fa-fw"></i> (0)
+                          @endif
+                      </h4>
+
                       <table class="table table-bordered table-striped table-hover">
 
                           <tr>
@@ -126,6 +134,10 @@
                       <h4 class="text-center"><i class="fa fa-futbol-o fa-fw"></i> <b>{{ $team_2_result->goal  or '-'  }}</b></h4>
                       <h4 class="text-center"><i class="fa fa-diamond fa-fw"></i> <b>{{ $team_2_result->result  or '-' }}</b></h4>
                       <h4 class="text-center"><i class="fa fa-cubes fa-fw"></i> <b>{{ $team_2_result->name  or '-' }}</b> ({{ $team_2_result->modificatore  or '-' }})</h4>
+
+                      <h4 class="text-center"><i class="fa fa-home fa-fw"></i>
+                          <i class="fa fa-square-o fa-fw"></i> (0)
+                      </h4>
 
                       <table class="table table-bordered table-striped table-hover">
 

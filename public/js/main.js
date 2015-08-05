@@ -4,6 +4,7 @@
 
 $(document).ready(function() {
 
+
     if($('#playersDataTable').length > 0) {
 
         var options = {
@@ -191,7 +192,10 @@ function ajaxSubmit(_form,_callback){
         encode      : true
     }).done(function(response){
         console.log('RESP',response);
-        console.log('DATA-ATTR-CB',_callback);
+        // console.log('DATA-ATTR-CB',_callback);
+
+        $('#cb-modal-sm').modal('show');
+
         if(_callback)
             _callback(_formId,response);
     });

@@ -25,6 +25,7 @@ class CreateCalendarioTable extends Migration {
             $table->integer('modulo_2_id')->default(0);
             $table->float('result_team_1_id')->nullable();
             $table->float('result_team_2_id')->nullable();
+            $table->integer('fattore_campo')->default(0);
 			$table->timestamps();
             $table->softDeletes();
 

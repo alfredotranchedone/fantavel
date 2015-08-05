@@ -39,6 +39,10 @@
 
                 <input type="hidden" name="_token" id="_token" value="<?php echo csrf_token(); ?>">
 
+                <?php
+                    $today = Carbon\Carbon::now();
+                ?>
+
                 @forelse($all as $match)
                      <?php
                         if( $match['giornata'] > (count($all) / 2) ) {
@@ -46,7 +50,7 @@
                         }
                      ?>
                      <div class="col-md-6 col-sm-6 col-xs-12">
-                     <table class="table table-bordered table-striped">
+                     <table class="table table-bordered table-striped" style="margin-bottom: 0">
                         <tr>
                             <th>Giornata #{{ $match['giornata'] }}  {{ $rit or '' }}</th>
                             <th>Risultato</th>
@@ -61,8 +65,42 @@
                             <td><a href="{{ url('admin/calendario/match/'.$m['id']) }}">dettagli</a></td>
                         </tr>
                         @endforeach
+                        </table>
+
+                        <table class="table table-condensed table-bordered">
+
                         <tr>
-                            <td colspan="4">
+                            <td>
+                                @if($match['dataGiornata'])
+
+                                    @if( $today > $match['dataGiornata'] )
+                                        <span class="text-red">
+                                            <i class="fa fa-warning fa-fw"></i> La giornata è trascorsa.
+                                            Le modifiche non influenzeranno il risultato salvato, a meno che non venga
+                                            ricaricato il file dei punteggi.
+                                        </span>
+                                    @else
+                                        <span class="text-green">
+                                            <i class="fa fa-info-circle fa-fw"></i> E' possibile modificare la data di
+                                            consegna della giornata e abilitare il conteggio del fattore campo (+2 per
+                                            la squadra di casa).
+                                        </span>
+                                    @endif
+
+                                @else
+
+                                    <span class="text-orange">
+                                        <i class="fa fa-exclamation"></i> &nbsp;Attenzione!<br/>
+                                        Non è stata ancora impostatata la data della giornata!
+                                    </span>
+                                @endif
+
+
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
                                 <b>Data Inizio Giornata: </b>
                                 @if($match['dataGiornata'])
                                     <span id="span-{{ $match['giornata'] }}">{{ date("d-m-Y H:i:s", strtotime($match['dataGiornata'])) }}</span> <small><a href="javascript:dgAddFormToggle('{{ $match['giornata'] }}');">[modifica]</a></small>
@@ -86,14 +124,46 @@
                                     <input name="action" id="action" type="hidden" value="{{ url('admin/ajax/save-data-giornata') }}">
                                     <button type="submit" class="btn btn-link">Salva</button>
                                 </form>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <form id="fc-edit-{{ $match['giornata'] }}" onsubmit="return ajaxSubmit($(this))" style="padding: 0">
+                                    <b>Fattore Campo: </b>
 
+                                    &nbsp;
 
+                                    <input type="radio"
+                                           name="fattore_campo"
+                                           value="1"
+                                           checked
+                                           {{ $match['fattore_campo'] != 0 ? 'checked':'' }}
+                                            >
+                                    SI
 
+                                    &nbsp;
 
+                                    <input type="radio"
+                                           name="fattore_campo"
+                                           value="0"
+                                           {{ $match['fattore_campo'] == 0 ? 'checked':'' }}
+                                           >
+                                    NO
+
+                                    &nbsp;
+
+                                    <button type="submit" class="btn btn-link btn-sm">[Salva]</button>
+
+                                    <input name="giornata" id="giornata" type="hidden" value="{{ $match['giornata'] }}">
+                                    <input name="action" id="action" type="hidden" value="{{ url('admin/ajax/save-fattore-campo-giornata') }}">
+
+                                </form>
 
 
                             </td>
                         </tr>
+
+
                     </table>
                     </div>
                 @empty
