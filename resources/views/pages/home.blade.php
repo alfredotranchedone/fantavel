@@ -105,6 +105,8 @@
                   </table>
 
 
+
+                  @if(!$nextMatches->isEmpty())
                   <table class="table table-condensed table-bordered table-striped">
                       <tr>
                           <th><i class="fa fa-home fa-fw"></i> Fattore Campo</th>
@@ -122,6 +124,7 @@
                           </td>
                       </tr>
                   </table>
+                  @endif
 
 
 
@@ -178,6 +181,7 @@
 
                 <h4>Giornata {{ $lastGiornata->giornata or '-'}}</h4>
 
+                @if(!$lastMatches->isEmpty())
                 <table class="table table-condensed table-bordered table-striped">
                     <tr>
                         <th><i class="fa fa-home fa-fw"></i> Fattore Campo</th>
@@ -192,6 +196,7 @@
                         </td>
                     </tr>
                 </table>
+                @endif
 
                 <table class="table table-bordered table-striped">
 

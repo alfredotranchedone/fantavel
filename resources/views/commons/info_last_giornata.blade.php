@@ -1,6 +1,6 @@
 
 
-
+@if(!$nextMatches->isEmpty())
 <table class="table table-condensed table-bordered table-striped">
     <tr>
         <th><i class="fa fa-home fa-fw"></i> Fattore Campo</th>
@@ -15,3 +15,4 @@
         </td>
     </tr>
 </table>
+@endif
