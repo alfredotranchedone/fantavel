@@ -26,6 +26,7 @@ class CreateCalendarioTable extends Migration {
             $table->float('result_team_1_id')->nullable();
             $table->float('result_team_2_id')->nullable();
             $table->integer('fattore_campo')->default(0);
+            $table->integer('group_id')->default(0);
 			$table->timestamps();
             $table->softDeletes();
 
@@ -52,6 +53,11 @@ class CreateCalendarioTable extends Migration {
             $table->foreign('stagione_id')
                 ->references('id')
                 ->on('stagioni')
+                ->onUpdate('cascade');
+
+            $table->foreign('group_id')
+                ->references('id')
+                ->on('groups')
                 ->onUpdate('cascade');
 
 
