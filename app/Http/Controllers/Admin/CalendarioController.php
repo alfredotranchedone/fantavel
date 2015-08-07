@@ -289,10 +289,6 @@ class CalendarioController extends Controller {
 	{
 
 
-        /**
-         * TODO
-         * debug query!!!!!!!!!!!
-         */
         $matches = Calendario::result($giornata)->get();
 
         return view('pages.admin.calendario.risultato_giornata',[

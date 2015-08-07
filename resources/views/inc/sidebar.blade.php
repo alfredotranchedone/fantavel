@@ -52,10 +52,11 @@
            </ul>
         </li>
 
-        <li class="treeview {{ Menu::activeMenu('moduli') }}">
+        <li class="treeview {{ Menu::activeMenu('moduli') }} {{ Menu::activeMenu('config') }}">
           <a href="#"><i class="fa fa-gear"></i> <span>Impostazioni</span> <i class="fa fa-angle-left pull-right"></i></a>
           <ul class="treeview-menu">
             <li class="{{ Menu::activeMenu('moduli') }}"><a href="{{ url('admin/moduli') }}"><i class="fa fa-circle-o"></i> Moduli</a></li>
+            <li class="{{ Menu::activeMenu('config/groups') }}"><a href="{{ url('admin/config/groups') }}"><i class="fa fa-circle-o"></i> Gruppi</a></li>
             <li><a href="#"><i class="fa fa-circle"></i>  Amministratori</a></li>
           </ul>
         </li>

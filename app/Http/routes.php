@@ -28,6 +28,11 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function()
     Route::resource('team', 'Admin\TeamController');
     Route::resource('moduli', 'Admin\ModuliController');
 
+    Route::group(['prefix'=>'config'],function(){
+        Route::resource('groups', 'Admin\GroupsController');
+    });
+
+
     Route::get('import', 'Admin\ImportController@index');
     Route::post('import/upload', 'Admin\ImportController@upload');
 
@@ -36,7 +41,8 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function()
         'rose' => 'Admin\RoseController',
         'utility/backup' => 'Admin\BackupController',
         'utility' => 'Admin\UtilityController',
-        'ajax' => 'Admin\AjaxController'
+        'ajax' => 'Admin\AjaxController',
+        'config/groups' => 'Admin\GroupsController'
     ]);
 
     Route::get('/', 'HomeController@index');
