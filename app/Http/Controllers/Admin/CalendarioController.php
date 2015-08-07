@@ -12,6 +12,7 @@ use App\Player;
 use App\Punteggi;
 use App\Result;
 use App\Team;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -20,6 +21,8 @@ class CalendarioController extends Controller {
 
     private $giornata;
     private $stagione_id;
+    // dichiara fattore campo
+    private $fattore_campo = 2;
 
 	public function getIndex()
 	{
@@ -200,7 +203,7 @@ class CalendarioController extends Controller {
         $groups = array();
         foreach ($all as $item) {
             $key = $item['giornata'];
-
+            $fc = $item['fattore_campo'];
             $dG = $item['dataGiornata'];
             $dC = $item['dataConsegna'];
             if (!isset($groups[$key])) {
@@ -209,12 +212,15 @@ class CalendarioController extends Controller {
                     'giornata'=>$key,
                     'dataGiornata'=> $dG,
                     'dataConsegna'=> $dC,
+                    'fattore_campo' => $fc
                 ];
             } else {
                 $groups[$key]['incontri'][] = $item;
                 $groups[$key]['giornata'] = $key;
                 $groups[$key]['dataGiornata'] = $dG;
                 $groups[$key]['dataConsegna'] = $dC;
+                $groups[$key]['fattore_campo'] = $fc;
+
             }
         }
 
@@ -237,12 +243,43 @@ class CalendarioController extends Controller {
         $nextGiornata = Calendario::nextGiornata()->first();
         $lastGiornata = Calendario::lastGiornata()->first();
 
+        $nextData = 0;
+        $nextLimite = 0;
+
+        if(!$next->isEmpty()) {
+
+            $nextData = $next->first()->dataGiornata;
+
+            if(!$last->isEmpty())
+                $nextLimite =  $next->first()->dataConsegna;
+
+        } else {
+            $nextData = false;
+        }
+
+
+        $dg = false;
+        $dc = false;
+
+        if($nextData > 0) {
+            $d = new Carbon();
+            $dg = $d->createFromTimestamp(strtotime($nextData))
+                ->format('d/m/Y H:i:s');
+        }
+
+        if($nextLimite>0) {
+            $c = new Carbon();
+            $dc = $c->createFromTimestamp(strtotime($nextLimite))
+                ->format('d/m/Y H:i:s');
+        }
 
         return view('pages.admin.calendario.index',[
             'nextMatches' => $next,
             'lastMatches' => $last,
             'nextGiornata' => $nextGiornata,
             'lastGiornata' => $lastGiornata,
+            'dataGiornata' => $dg,
+            'dataConsegna' => $dc,
         ]);
 
 	}
@@ -251,6 +288,11 @@ class CalendarioController extends Controller {
     public function getRisultatoGiornata($giornata)
 	{
 
+
+        /**
+         * TODO
+         * debug query!!!!!!!!!!!
+         */
         $matches = Calendario::result($giornata)->get();
 
         return view('pages.admin.calendario.risultato_giornata',[
@@ -450,24 +492,15 @@ class CalendarioController extends Controller {
      */
     private function calcolaRisultati($giornata,$stagioneId = 0){
 
-        /**
-         *
-         * TODO
-         * check formazione per la giornata in corso per ogni team,
-         * se non presente duplica la precedente
-         *
-         */
 
         // estrai teams
         $teams = Team::all(['id']);
 
-        debug($teams);
 
         // per ogni team...
         $teams->each(function($t) use ($giornata){
 
             $team_id = $t->id;
-            debug($team_id,$giornata);
 
             // ...controlla se esiste la formazione per la giornata corrente
             $current_formation = Formation::where('teams_id',$team_id)
@@ -505,7 +538,13 @@ class CalendarioController extends Controller {
         // estrai i punteggi dei titolari della giornata in corso
         $titolari = Formation::titolari($giornata)->get();
 
-        debug($giornata,$titolari);
+        // controlla se è attivo il fattore campo per la giornata
+        $fc = Calendario::where('giornata',$giornata)->get();
+        if( ( ! $fc->isEmpty() ) AND ($fc->first()->fattore_campo==1) ){
+            $check_fattore_campo = true;
+        } else {
+            $check_fattore_campo = false;
+        }
 
         // raggruppa i titolari per squadra (teams_id) e numero maglia
         $titolariByTeam = [];
@@ -518,7 +557,8 @@ class CalendarioController extends Controller {
             ];
         }
 
-
+        //
+        $counter_team = 0;
         // conteggia i totali
         foreach ($titolariByTeam as $team_id => $giocatore) :
 
@@ -608,6 +648,20 @@ class CalendarioController extends Controller {
             echo 'Modulo Modificatore: '. $moduloModificatore .'</p>';
             */
 
+
+            // controlla se il fattore campo è abilitato. Se sì, aggiungi il mod
+            if($check_fattore_campo) {
+
+                foreach ($fc as $c) :
+                    if($team_id == $c->team_1_id):
+                        //$old_totale = $totale_squadra;
+                        $totale_squadra = $totale_squadra + $this->fattore_campo;
+                        //echo sprintf(' casa! %s %s | ', $totale_squadra + $moduloModificatore,$old_totale + $moduloModificatore);
+                    endif;
+                endforeach;
+
+            }
+
             $goal_fatti = $this->calcolaGoals( $totale_squadra + $moduloModificatore );
 
             // Salva risultato
@@ -620,11 +674,10 @@ class CalendarioController extends Controller {
             $risultato->goal        = $goal_fatti;
             $risultato->save();
 
+            $counter_team++;
 
         endforeach;
 
-
-        // dd($titolariByTeam);
 
     }
 

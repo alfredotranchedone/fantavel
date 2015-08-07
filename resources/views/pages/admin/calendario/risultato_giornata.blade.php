@@ -49,6 +49,8 @@
 
                 <h4>Giornata {{ $giornata or '-'}}</h4>
 
+                @include('commons.info_giornata',['match' => $matches])
+
                 <table class="table table-bordered table-striped">
 
                     <tr>

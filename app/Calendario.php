@@ -57,6 +57,7 @@ class Calendario extends Model {
                 calendario.id,
                 calendario.dataGiornata,
                 calendario.dataConsegna,
+                calendario.fattore_campo,
                 t1.name as team1,
                 t2.name as team2,
                 (SELECT min(DISTINCT(giornata))
@@ -125,6 +126,7 @@ class Calendario extends Model {
         return $query
             ->select(DB::raw('calendario.giornata,
                 calendario.id,
+                calendario.fattore_campo,
                 t1.name as team1,
                 t2.name as team2,
                 r1.result as resultTeam1,
@@ -161,6 +163,7 @@ class Calendario extends Model {
 
         return $query
             ->select(DB::raw('calendario.giornata,
+                calendario.fattore_campo,
                 t1.id as idTeam1,
                 t2.id as idTeam2,
                 t1.name as team1,
@@ -230,6 +233,7 @@ class Calendario extends Model {
             ->select(DB::raw('calendario.giornata,
               calendario.dataGiornata,
               calendario.dataConsegna,
+              calendario.fattore_campo,
               calendario.id,
               t1.name as team1,
               t2.name as team2,
@@ -293,12 +297,14 @@ class Calendario extends Model {
     public function scopeResult($query,$giornata,$stagioneId=0)
     {
 
+        /*
         return $query
             ->select(DB::raw('
                   calendario.id,
                   calendario.giornata,
                   calendario.team_1_id,
                   calendario.team_2_id,
+                  calendario.fattore_campo,
                   (SELECT goal FROM results WHERE results.teams_id = team_1_id) as goal1,
                   (SELECT goal FROM results WHERE results.teams_id = team_2_id) as goal2,
                   (SELECT name FROM teams WHERE teams.id = team_1_id) as team1,
@@ -310,6 +316,38 @@ class Calendario extends Model {
             '))
             ->where('giornata',$giornata)
             ->where('stagione_id',$stagioneId);
+        */
+
+
+        return $query
+            ->select(DB::raw('calendario.giornata,
+                calendario.id,
+                calendario.fattore_campo,
+                calendario.team_1_id,
+                calendario.team_2_id,
+                calendario.dataGiornata,
+                calendario.dataConsegna,
+                t1.name as team1,
+                t2.name as team2,
+                r1.result as resultTeam1,
+                r2.result as resultTeam2,
+                r1.goal as goal1,
+                r2.goal as goal2'
+            ))
+            ->where('calendario.giornata', $giornata)
+            ->where('calendario.stagione_id',$stagioneId)
+            ->leftJoin('teams as t1', 't1.id', '=', 'calendario.team_1_id')
+            ->leftJoin('teams as t2', 't2.id', '=', 'calendario.team_2_id')
+            ->leftJoin('results as r1', function($join) use ($giornata)
+            {
+                $join->on('r1.giornata', '=', $giornata)
+                    ->on('r1.teams_id', '=', 'calendario.team_1_id');
+            })
+            ->leftJoin('results as r2', function($join) use ($giornata)
+            {
+                $join->on('r2.giornata', '=', $giornata)
+                    ->on('r2.teams_id', '=', 'calendario.team_2_id');
+            });
 
     }
 

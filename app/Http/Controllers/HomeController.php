@@ -40,11 +40,11 @@ class HomeController extends Controller {
         if( $next->isEmpty() ){
             //dd('campionato finito');
         }
-        $nextGiornata = Calendario::nextGiornata()->first();
-        $lastGiornata = Calendario::lastGiornata()->first();
 
         $classifica = Classifica::getClassifica();
 
+        $nextGiornata = Calendario::nextGiornata()->first();
+        $lastGiornata = Calendario::lastGiornata()->first();
 
         if(!$next->isEmpty()) {
 
