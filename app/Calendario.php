@@ -288,7 +288,6 @@ class Calendario extends Model {
                 dataGiornata
             '))
             ->whereRaw('calendario.giornata IN ( SELECT DISTINCT(giornata) FROM results )');
-        ;
 
     }
 
@@ -354,4 +353,23 @@ class Calendario extends Model {
 
 
 
-}
+    public function scopeGiornate($query)
+    {
+
+        /*
+        return $query
+            ->select('giornata')
+            ->distinct()
+            ->whereNotNull('result_team_1_id')
+            ->whereNotNull('result_team_2_id')
+            ;
+        */
+        return $query
+            ->select('giornata')
+            ->distinct();
+    }
+
+
+
+
+    }

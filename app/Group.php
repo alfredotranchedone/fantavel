@@ -9,4 +9,11 @@ class Group extends Model {
 
     protected $dates = ['deleted_at'];
 
+
+    public function calendario()
+    {
+        return $this->hasMany('App\Calendario','group_id','id');
+    }
+
+
 }

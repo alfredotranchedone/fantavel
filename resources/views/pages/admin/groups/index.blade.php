@@ -11,7 +11,7 @@
         Gruppi (Minicampionati)
     </h1>
     <ol class="breadcrumb">
-        <li><a href="admin/"><i class="fa fa-dashboard"></i> Admin</a></li>
+        <li><a href="{{ url('admin') }}"><i class="fa fa-dashboard"></i> Admin</a></li>
         <li class="active">Impostazioni</li>
         <li class="active">Gruppi</li>
     </ol>
@@ -48,6 +48,8 @@
                         <tr>
                             <th width="30px">#</th>
                             <th>Nome</th>
+                            <th>Giornate</th>
+                            <th width="50px"></th>
                             <th width="50px"></th>
                         </tr>
                         <?php $i=1; ?>
@@ -56,6 +58,10 @@
                             <tr>
                                 <td>{{ $i }}.</td>
                                 <td>{{ $g->name }}</td>
+                                <td>da <b>{{ $g->calendario->first()->giornata or '-' }}</b> a <b>{{ $g->calendario->last()->giornata or '-'}}</b></td>
+                                <td>
+                                    <a href="{{ url('admin/config/groups/associa/'.$g->id) }}">associa</a>
+                                </td>
                                 <td><a class="btn btn-warning btn-xs"
                                        href="{{ url('admin/config/groups/edit/'.$g->id) }}"><i class="fa fa-edit fa-fw"></i> </a></td>
                             </tr>

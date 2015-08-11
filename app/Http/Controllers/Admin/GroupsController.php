@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers\Admin;
 
+use App\Calendario;
 use App\Group;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -24,15 +25,77 @@ class GroupsController extends Controller {
 
 	}
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create(Request $request)
+
+	public function getAssocia($id=null)
 	{
 
+        $gruppo = Group::find($id);
+        $giornate = Calendario::giornate()->get();
+        $assoc_start = 0;
+        $assoc_end = 0;
+
+        if(!$gruppo->calendario->isEmpty()) {
+            $assoc_start = $gruppo->calendario->first()->giornata;
+            $assoc_end = $gruppo->calendario->last()->giornata;
+        }
+        
+        return view('pages.admin.groups.associa',[
+            'gruppo' => $gruppo,
+            'giornate' => $giornate,
+            'assoc_start' => $assoc_start,
+            'assoc_end' => $assoc_end
+        ]);
+
 	}
+
+
+    public function postAssocia(Request $request)
+	{
+
+        $this->validate($request, [
+            'id' => 'required',
+            'select_giornata_start' => 'required',
+            'select_giornata_end' => 'required',
+        ]);
+
+        $id = $request->input('id');
+        $s = $request->input('select_giornata_start');
+        $e = $request->input('select_giornata_end');
+
+        if($e<$s) {
+            return redirect('admin/config/groups/associa/'.$id)
+                ->with('message', 'La giornata finale deve essere maggiore di quella iniziale!')
+                ->with('messageType', 'warning');
+        }
+
+        // resetta giornate associate
+        $r = Calendario::where('group_id',$id)->get();
+        $r->each(function($giornata_da_resettare){
+            $giornata_da_resettare->group_id = 0;
+            $giornata_da_resettare->save();
+        });
+
+        // crea array giornate da associare
+        $giornate = [];
+        for($s;$s<=$e;$s++){
+            $giornate[] = $s;
+        }
+
+        // estrai giornate da associare
+        $giornate = Calendario::whereIn('giornata',$giornate)->get();
+
+        // salva associazione
+        $giornate->each(function($giornata) use ($id){
+            $giornata->group_id = $id;
+            $giornata->save();
+        });
+
+        return redirect('admin/config/groups')
+            ->with('message', 'Gruppo Associato Correttamente!')
+            ->with('messageType','success');
+
+	}
+
 
 	/**
 	 * Store a newly created resource in storage.
