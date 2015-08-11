@@ -30,6 +30,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function()
 
     Route::group(['prefix'=>'config'],function(){
         Route::resource('groups', 'Admin\GroupsController');
+        Route::get('/', 'Admin\ConfigController@index');
     });
 
 

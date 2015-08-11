@@ -25,7 +25,7 @@
               <span class="info-box-icon bg-aqua"><i class="fa fa-calendar"></i></span>
               <div class="info-box-content">
                   <span class="info-box-text">Ultima Giornata</span>
-                  <span class="info-box-number size30">{{ $lastGiornata->giornata or ''}}</span>
+                  <span class="info-box-number size30">{{ $lastGiornata->giornata or '-'}}</span>
               </div><!-- /.info-box-content -->
           </div>
       </div>

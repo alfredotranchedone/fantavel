@@ -145,6 +145,11 @@
       <foreign-key name="#FAKE_results_2" columns="teams_id" ref-table="team" ref-schema="" ref-catalog="" ref-columns="id" update-rule="0" delete-rule="0" deferrability="1"/>
       <foreign-key name="#FAKE_results_3" columns="stagione_id" ref-table="stagioni" ref-schema="" ref-catalog="" ref-columns="id" update-rule="0" delete-rule="0" deferrability="1"/>
     </table>
+    <table name="settings" schema="" catalog="" type="TABLE">
+      <column name="name" sqlType="VARCHAR" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="value" sqlType="VARCHAR" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <primary-key columns="name"/>
+    </table>
     <table name="sqlite_sequence" schema="" catalog="" type="TABLE">
       <column name="name" sqlType="" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
       <column name="seq" sqlType="" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>

@@ -38,7 +38,7 @@ class GroupsController extends Controller {
             $assoc_start = $gruppo->calendario->first()->giornata;
             $assoc_end = $gruppo->calendario->last()->giornata;
         }
-        
+
         return view('pages.admin.groups.associa',[
             'gruppo' => $gruppo,
             'giornate' => $giornate,

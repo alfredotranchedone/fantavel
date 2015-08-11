@@ -7,6 +7,7 @@ use App\Result;
 use App\Team;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use App\Setup;
 
 class HomeController extends Controller {
 
