@@ -25,6 +25,10 @@ class Classifica extends Model {
         if(!$giornata)
             $giornata = Calendario::lastGiornata()->first()->giornata;
 
+        if(is_null($giornata)){
+            $giornata=0;
+        }
+
         return $query
             ->select(
                 DB::raw('*,

@@ -333,15 +333,37 @@ class CalendarioController extends Controller {
 
         if($request->input('confirm') === 'CONFIRM') {
 
+            // svuota tabella calendario
+            Calendario::truncate();
+
+            // svuota classifica
+            Classifica::truncate();
+
             $totaleTeam = Team::count();
             $gironi = $request->input('gironi');
-            $teams = Team::all(['id', 'name'])->toArray();
+            $teams = Team::all(['id', 'name']);
 
-            $matches = $this->algoritmoDiBerger($teams, $gironi, 'array');
+            $matches = $this->algoritmoDiBerger($teams->toArray(), $gironi, 'array');
 
             foreach ($matches as $m) {
                 Calendario::create($m);
             }
+
+            // inizializza classifica
+            $teams->each(function($team){
+                $classifica = new Classifica();
+                $classifica->team_id = $team->id;
+                $classifica->vinte = 0;
+                $classifica->nulle = 0;
+                $classifica->perse = 0;
+                $classifica->gf = 0;
+                $classifica->gs = 0;
+                $classifica->giornata = 0;
+                $classifica->stagione_id = 0;
+                $classifica->fp = 0;
+                $classifica->posizione = '0';
+                $classifica->save();
+            });
 
             $msg = 'Calendario Generato!';
             $msgType = 'success';
