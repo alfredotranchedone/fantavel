@@ -4,31 +4,27 @@ use App\Calendario;
 use App\Classifica;
 use App\Group;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class ClassificaController extends Controller {
 
     public function index()
     {
 
-        $minicampionati = [];
+        $groups_name = false;
         $classifica = Classifica::getClassifica();
+        $last_giornata = Calendario::lastGiornata()->first()->giornata;
         $groups = Classifica::getGruppo();
 
-        /*
-        if(!empty($groups)){
-
-            $groups->each(function($group) use ($minicampionati){
-                $minicampionati[] = Classifica::getGruppo($group->id);
-            });
-
+        if(!is_null($groups)) {
+            $groups_id = $groups->first()->gruppo;
+            $groups_name = Group::find($groups_id)->first(['name'])->name;
         }
-        */
-
-        dd($groups);
 
         return view('pages.admin.classifica.index',[
             'classifica' => $classifica,
             'groups' => $groups,
+            'groups_name' => $groups_name,
         ]);
 
     }

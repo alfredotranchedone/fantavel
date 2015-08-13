@@ -47,27 +47,33 @@
 
     </div>
 
+
+    @if($groups_name)
     <div class="row">
-      <div class="col-md-12">
-        @if($groups)
+      <div class="col-md-6">
 
-            @forelse($groups as $g)
+          <h3>Mini Campionati</h3>
+          <div class="box">
+              <div class="box-header with-border">
+                  <i class="fa fa-list fa-fw"></i>
+                  <h3 class="box-title">Campionato: {{ $groups_name }}</h3>
+                  <div class="box-tools pull-right">
+                      <!-- Buttons, labels, and many other things can be placed here! -->
+                      <!-- Here is a label for example -->
+                  </div><!-- /.box-tools -->
+              </div><!-- /.box-header -->
+              <div class="box-body">
 
-                  <br/><br/>
-                gruppo {{ $g->name }} <br/>
+                  @include('commons.classifica_mini_table')
 
-                @forelse($g->calendario as $c)
-                    {{ $c->giornata }}
-                @empty
-                    no associazioni
-                @endforelse
+              </div><!-- /.box-body -->
+              <div class="box-footer">
 
-            @empty
-                no gruppi
-            @endforelse
+              </div><!-- box-footer -->
+          </div>
 
-        @endif
       </div>
     </div>
+    @endif
 
 @endsection

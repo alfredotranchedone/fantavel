@@ -76,18 +76,32 @@ class Classifica extends Model {
 
 
 
-    public function scopeGetGruppo($query,$giornata=null)
+    public function scopeGetGruppo($query,$giornata=false, $gruppo=false)
     {
 
         // se giornata iniziale non è definita, recupera ultima giornata
         if(!$giornata)
             $giornata = Calendario::lastGiornata()->first()->giornata;
 
-        return $query
-            //->select()
+        if(is_null($giornata))
+            $giornata=0;
+
+        $query
+            ->select(
+                DB::raw('
+                teams.name,
+                classifica.fp,
+                (SELECT calendario.group_id
+                    FROM calendario
+                    WHERE calendario.giornata = '.$giornata.' LIMIT 1) AS gruppo')
+            )
             ->leftJoin('teams','teams.id','=','team_id')
-            ->leftJoin('calendario','calendario.giornata','=','classifica.giornata')
-            ->where('classifica.giornata',$giornata)
+            ->where('classifica.giornata',$giornata);
+
+        if($gruppo>0)
+            $query->where('gruppo',$gruppo);
+
+        return $query
             ->orderBy('classifica.fp','DESC')
             ->get();
 

@@ -271,7 +271,7 @@ class Calendario extends Model {
 
     }
 
-    public function scopeLastGiornata($query)
+        public function scopeLastGiornata($query)
     {
 
         /*
