@@ -43,7 +43,9 @@
         <li class="{{ Menu::activeMenu('user') }}"><a href="{{ url('admin/user') }}"><i class="fa fa-user"></i> <span>Utenti</span></a></li>
         <li class="{{ Menu::activeMenu('rose') }}"><a href="{{ url('admin/rose') }}"><i class="fa fa-users"></i> <span>Squadre</span></a></li>
 
-        <li class="treeview {{ Menu::activeMenu('calendario') }}">
+        <li class="{{ Menu::activeMenu('classifica') }}"><a href="{{ url('admin/classifica') }}"><i class="fa fa-list"></i> <span>Classifica</span></a></li>
+
+          <li class="treeview {{ Menu::activeMenu('calendario') }}">
            <a href="#"><i class="fa fa-calendar"></i> <span>Calendario</span> <i class="fa fa-angle-left pull-right"></i></a>
            <ul class="treeview-menu">
               <li class="{{ Menu::activeMenu('calendario/riepilogo') }}"><a href="{{ url('admin/calendario') }}"><i class="fa fa-circle-o"></i> Riepilogo</a></li>

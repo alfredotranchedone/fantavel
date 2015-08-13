@@ -27,6 +27,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function()
     Route::resource('user', 'Admin\UserController');
     Route::resource('team', 'Admin\TeamController');
     Route::resource('moduli', 'Admin\ModuliController');
+    Route::resource('classifica', 'Admin\ClassificaController');
 
     Route::group(['prefix'=>'config'],function(){
         Route::resource('groups', 'Admin\GroupsController');

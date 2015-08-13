@@ -50,9 +50,9 @@
 
                           <tr>
                               <th style="width:30px;">#</th>
-                              <th>Ruolo</th>
+                              <th>R.</th>
                               <th>Giocatore</th>
-                              <th>Totale</th>
+                              <th>TOT</th>
                               <th>Voto</th>
                               <th nowrap>Gol (n)</th>
                               <th>Amm</th>
@@ -126,6 +126,7 @@
                           @endforelse
 
                       </table>
+
                   </div>
 
                   <div class="col-md-6">
@@ -143,9 +144,9 @@
 
                           <tr>
                               <th style="width:30px;">#</th>
-                              <th>Ruolo</th>
+                              <th>R.</th>
                               <th>Giocatore</th>
-                              <th>Totale</th>
+                              <th>TOT</th>
                               <th>Voto</th>
                               <th nowrap>Gol (n)</th>
                               <th>Amm</th>

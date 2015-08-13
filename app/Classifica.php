@@ -70,4 +70,25 @@ class Classifica extends Model {
 
     }
 
+
+
+    public function scopeGetGruppo($query,$giornata=null)
+    {
+
+        // se giornata iniziale non è definita, recupera ultima giornata
+        if(!$giornata)
+            $giornata = Calendario::lastGiornata()->first()->giornata;
+
+        return $query
+            //->select()
+            ->leftJoin('teams','teams.id','=','team_id')
+            ->leftJoin('calendario','calendario.giornata','=','classifica.giornata')
+            ->where('classifica.giornata',$giornata)
+            ->orderBy('classifica.fp','DESC')
+            ->get();
+
+    }
+
+
+
 }
