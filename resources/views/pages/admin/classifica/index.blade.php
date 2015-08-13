@@ -27,7 +27,7 @@
             <div class="box">
                 <div class="box-header with-border">
                     <i class="fa fa-list fa-fw"></i>
-                    <h3 class="box-title">Classifica</h3>
+                    <h3 class="box-title">Classifica Giornata <b>{{ $giornata }}</b></h3>
                     <div class="box-tools pull-right">
                         <!-- Buttons, labels, and many other things can be placed here! -->
                         <!-- Here is a label for example -->

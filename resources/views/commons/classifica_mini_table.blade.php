@@ -7,7 +7,7 @@
         </tr>
         <?php $i=1; ?>
         @forelse($groups as $c)
-            <tr>
+            <tr class="@if($c->user_id == Auth::user()->id) bg-success @endif">
                 <td>{{ $i }}.</td>
                 <td>{{ $c->name or ' - '}}</td>
                 <td>{{ $c->fp or '-' }}</td>

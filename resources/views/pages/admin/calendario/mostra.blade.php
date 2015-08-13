@@ -40,7 +40,7 @@
                 <input type="hidden" name="_token" id="_token" value="<?php echo csrf_token(); ?>">
 
                 <?php
-                    $today = Carbon\Carbon::now();
+                    $today = Carbon\Carbon::now()->timezone('Europe/Rome');
                 ?>
 
                 @forelse($all as $match)

@@ -14,9 +14,10 @@
         </tr>
         <?php $i=1; ?>
         @forelse($classifica as $c)
-            <tr>
+
+            <tr class="@if($c->user_id == Auth::user()->id) bg-success @endif">
                 <td>{{ $i }}.</td>
-                <td>{{ $c->teams->name or ' - '}}</td>
+                <td>{{ $c->name or ' - '}}</td>
                 <td>{{ $c->punti }}</td>
                 <td>{{ $c->vinte }}</td>
                 <td>{{ $c->nulle }}</td>

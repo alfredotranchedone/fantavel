@@ -31,11 +31,12 @@ class Classifica extends Model {
 
         return $query
             ->select(
-                DB::raw('*,
+                DB::raw('classifica.*, teams.id, teams.name, teams.user_id,
                     ((vinte * 3) + (nulle * 1)) as punti,
                     (gf - gs) as differenzaReti
                     ')
             )
+            ->leftJoin('teams','teams.id','=','classifica.team_id')
             ->where('giornata',$giornata)
             ->orderBy('punti','DESC')
             ->orderBy('vinte','DESC')

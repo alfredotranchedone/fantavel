@@ -31,7 +31,7 @@ class HomeController extends Controller {
 	{
 
 
-
+        Carbon::setLocale('it');
 
         $user = Auth::user();
 
@@ -45,10 +45,10 @@ class HomeController extends Controller {
             //dd('campionato finito');
         }
 
-        $classifica = Classifica::getClassifica();
-
         $nextGiornata = Calendario::nextGiornata()->first();
         $lastGiornata = Calendario::lastGiornata()->first();
+
+        $classifica = Classifica::getClassifica();
 
         if(!$next->isEmpty()) {
 
@@ -95,6 +95,17 @@ class HomeController extends Controller {
             case 100:
             default:
 
+                $now = Carbon::now()->timezone('Europe/Rome');
+                $canSubmitFormation = false;
+
+                if($dc):
+                    $limite = Carbon::createFromFormat('d/m/Y H:i:s',$dc,'Europe/Rome');
+
+                    if($now->lt($limite)):
+                        $canSubmitFormation = true;
+                    endif;
+                endif;
+
                 $user_team_id = Team::UserTeamId($user->id)->first()->id;
                 $media = Result::AverageResult($user_team_id)->first()->media;
 
@@ -132,7 +143,8 @@ class HomeController extends Controller {
                     'dataConsegna' => $dc,
                     'media' => $media,
                     'variazione_andamento' => $variazione_andamento,
-                    'posizione_precedente' => $posizione_precedente
+                    'posizione_precedente' => $posizione_precedente,
+                    'canSubmitFormation' => $canSubmitFormation
                 ]);
                 break;
 

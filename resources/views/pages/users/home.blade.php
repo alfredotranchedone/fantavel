@@ -19,7 +19,6 @@
 
   <div class="row">
 
-
       <div class="col-md-3">
           <div class="info-box">
               <span class="info-box-icon bg-aqua"><i class="fa fa-calendar"></i></span>
@@ -81,7 +80,6 @@
 
   </div>
 
-    <p>Contenuto</p>
 
     <div class="row">
 
@@ -114,7 +112,7 @@
                                   {{ $dataGiornata }}
                               @endif
                           </td>
-                          <td colspan="2">
+                          <td colspan="2" class="@if(!$canSubmitFormation) text-red @elseif($canSubmitFormation) text-green @endif">
                               {{ $dataConsegna or 'n.d.' }}
                           </td>
                       </tr>
@@ -151,8 +149,17 @@
 
               </div><!-- /.box-body -->
               <div class="box-footer">
-                <a href="{{ url('user') }}">
-                    <i class="fa fa-angle-right fa-fw"></i> Vai a Formazione</a>
+                  @if($canSubmitFormation)
+                    <a class="btn btn-primary" href="{{ url('user/formazione') }}">
+                        <i class="fa fa-angle-right fa-fw"></i>
+                        Vai a Formazione
+                    </a>
+                  @else
+                      <a class="btn btn-primary disabled" href="{{ url('user') }}">
+                          <i class="fa fa-angle-right fa-fw"></i>
+                          Vai a Formazione
+                      </a>
+                  @endif
               </div><!-- box-footer -->
             </div><!-- /.box -->
 
@@ -227,38 +234,7 @@
             <div class="box-body no-padding">
 
 
-                <div class="table-responsive ">
-                    <table class="table table-striped table-bordered no-margin">
-                        <tr>
-                            <th style="width: 10px">#</th>
-                            <th>Team</th>
-                            <th><span data-toggle="tooltip" data-original-title="Punti">Pt</span></th>
-                            <th><span data-toggle="tooltip" data-original-title="Vinte">V</span></th>
-                            <th><span data-toggle="tooltip" data-original-title="Nulle">N</span></th>
-                            <th><span data-toggle="tooltip" data-original-title="Pareggiate">P</span></th>
-                            <th><span data-toggle="tooltip" data-original-title="Gol Fatti">Gf</span></th>
-                            <th><span data-toggle="tooltip" data-original-title="Gol Subiti">Gs</span></th>
-                            <th><span data-toggle="tooltip" data-original-title="Differenza Reti">Dr</span></th>
-                            <th><span data-toggle="tooltip" data-original-title="FantaPunti">Fp</span></th>
-                        </tr>
-                        <?php $i=1; ?>
-                        @foreach($classifica as $c)
-                            <tr>
-                                <td>{{ $i }}.</td>
-                                <td>{{ $c->teams->name or ' - '}}</td>
-                                <td>{{ $c->punti }}</td>
-                                <td>{{ $c->vinte }}</td>
-                                <td>{{ $c->nulle }}</td>
-                                <td>{{ $c->perse }}</td>
-                                <td>{{ $c->gf }}</td>
-                                <td>{{ $c->gs }}</td>
-                                <td>{{ $c->differenzaReti }}</td>
-                                <td>{{ $c->fp }}</td>
-                            </tr>
-                            <?php $i++; ?>
-                        @endforeach
-                    </table>
-                </div>
+                @include('commons.classifica_table')
 
 
             </div><!-- /.box-body -->

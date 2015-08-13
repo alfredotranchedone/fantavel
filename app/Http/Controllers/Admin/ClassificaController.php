@@ -12,9 +12,9 @@ class ClassificaController extends Controller {
     {
 
         $groups_name = false;
-        $classifica = Classifica::getClassifica();
         $last_giornata = Calendario::lastGiornata()->first()->giornata;
-        $groups = Classifica::getGruppo();
+        $classifica = Classifica::getClassifica($last_giornata);
+        $groups = Classifica::getGruppo($last_giornata);
 
         if(!is_null($groups)) {
             $groups_id = $groups->first()->gruppo;
@@ -22,6 +22,7 @@ class ClassificaController extends Controller {
         }
 
         return view('pages.admin.classifica.index',[
+            'giornata' => $last_giornata,
             'classifica' => $classifica,
             'groups' => $groups,
             'groups_name' => $groups_name,
