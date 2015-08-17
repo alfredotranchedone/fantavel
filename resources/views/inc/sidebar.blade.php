@@ -79,8 +79,10 @@
       @else
 
         <li class="header">MENU</li>
-        <li class="{{ Menu::activeMenu('user') }}"><a href="{{ url('user') }}"><span>Home</span></a></li>
+        <li class="{{ Menu::activeMenu('user') }} {{ Menu::activeMenu('/') }}"><a href="{{ url('user') }}"><span>Home</span></a></li>
         <li class="{{ Menu::activeMenu('user/formazione') }}"><a href="{{ url('user/formazione') }}"><span>Formazione</span></a></li>
+        <li class="{{ Menu::activeMenu('user/classifica') }}"><a href="{{ url('user/classifica') }}"><span>Classifica</span></a></li>
+        <li class="{{ Menu::activeMenu('user/calendario') }}"><a href="{{ url('user/calendario') }}"><span>Calendario</span></a></li>
         <li class="header">&nbsp;</li>
         <li><a href="{{ url('auth/logout') }}"><i class="fa fa-unlock fa-fw text-red"></i> Esci</a></li>
 

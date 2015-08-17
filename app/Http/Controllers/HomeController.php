@@ -8,6 +8,7 @@ use App\Team;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Setup;
+use App\Fantavel\Utilities;
 
 class HomeController extends Controller {
 
@@ -95,16 +96,7 @@ class HomeController extends Controller {
             case 100:
             default:
 
-                $now = Carbon::now()->timezone('Europe/Rome');
-                $canSubmitFormation = false;
-
-                if($dc):
-                    $limite = Carbon::createFromFormat('d/m/Y H:i:s',$dc,'Europe/Rome');
-
-                    if($now->lt($limite)):
-                        $canSubmitFormation = true;
-                    endif;
-                endif;
+                $canSubmitFormation = Utilities::canSubmitFormation($dc);
 
                 $user_team_id = Team::UserTeamId($user->id)->first()->id;
                 $media = Result::AverageResult($user_team_id)->first()->media;
