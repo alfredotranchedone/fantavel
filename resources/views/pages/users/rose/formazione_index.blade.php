@@ -37,10 +37,74 @@
 
     <hr style="border-color: #fff"/>
 
-    <div class="alert alert-danger">
-        <i class="fa fa-warning fa-fw"></i> <b>Attenzione! Giornata in corso!</b><br/>
-        Non è più possibile modificare la formazione! La scadenza era {{ $scadenza }} fa.
+
+
+    <div class="row">
+        <div class="col-md-6 col-xs-12 col-sm-12">
+
+            <div class="box collapsed-box">
+                <div class="box-header with-border">
+                    <i class="fa fa-diamond fa-fw"></i>
+                    <h3 class="box-title">Gestione Modulo</h3>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+
+                    <table class="table table-condensed table-bordered">
+                        <tr>
+                            <th width="35%">Modulo Corrente:</th>
+                            <td>{{ $team->modulo->name or '-' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Diff. Punteggio:</th>
+                            <td>{{ $team->modulo->modificatore or '-' }}</td>
+                        </tr>
+                    </table>
+
+                    <form class="marginTop" id="frmModulo" action="{{ url('admin/rose/save-modulo/'.$teamId) }}" method="post">
+                        <input type="hidden" value="{{ $teamId }}" name="team_id" />
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+                        <label for="modulo">Modulo (Diff. Punteggio)</label>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <select class="form-control" name="modulo" id="modulo">
+                                        @forelse($moduli as $m)
+
+                                            <option {{  (isset($team->modulo->name) AND ($team->modulo->name == $m->name))?'selected':'' }} value="{{ $m->id }}">
+                                                {{ $m->name }} &nbsp; ( {{ $m->modificatore }} )
+                                            </option>
+                                        @empty
+                                            <option value="0">Nessun Modulo</option>
+                                        @endforelse
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-primary pull-right">
+                                    <i class="fa fa-save fa-fw"></i> Salva Modulo
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /.row -->
+
+                    </form>
+
+                    <p>&nbsp;</p>
+
+                </div><!-- /.box-body -->
+            </div>
+
+        </div>
     </div>
+
+
+
 
     <div class="row">
 
@@ -62,6 +126,16 @@
                     if(isset($team->modulo->name)):
                     ?>
 
+                    <form action="{{ url('user/formazione') }}" method="post">
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa fa-save fa-fw"></i>
+                                Salva Formazione
+                            </button>
+                        </div>
+
+
 
                         <div class="row marginTop">
                             <div class="col-md-6">
@@ -76,6 +150,7 @@
                                         <th class="autowidth">Maglia </th>
                                         <th class="autowidth">Ruolo</th>
                                         <th>Calciatore</th>
+                                        <th style="width: 10px"></th>
                                     </tr>
 
                                     <?php
@@ -161,13 +236,9 @@
                                         </td>
                                         <td class="{{ $position }} text-center">{{ $position }}</td>
                                         <td>
-
-                                            <select
-                                                    disabled
-                                                    data-position="{{ $position }}"
-                                                    name="sel_numero_maglia[{{ $i }}]"
-                                                    class="form-control">
-                                                <option value="0">-</option>
+                                            <input type="hidden" name="numero_maglia[{{ $i }}]" value="{{ $p->formazione->numero_maglia or 0 }}" />
+                                            <select data-position="{{ $position }}" name="sel_numero_maglia[{{ $i }}]" class="form-control">
+                                                <option value="0">Seleziona...</option>
                                                 @foreach($players as $p)
                                                     <?php
                                                     if(isset($p->formazione->numero_maglia) AND $p->formazione->numero_maglia == $i):
@@ -183,7 +254,18 @@
                                                 @endforeach
                                             </select>
                                         </td>
-
+                                        <td style="display: table-cell; vertical-align: middle">
+                                            <button
+                                                    data-toggle="tooltip"
+                                                    data-original-title="Rimuovi Calciatore"
+                                                    data-id="btnPosRemove{{ $i }}"
+                                                    data-maglia="{{ $i }}"
+                                                    value=""
+                                                    type="button"
+                                                    class="btn btn-link btn-xs pull-right">
+                                                <i class="fa fa-ban fa-fw"></i>
+                                            </button>
+                                        </td>
                                     </tr>
 
                                     <?php endfor; ?>
@@ -227,9 +309,9 @@
                                         </td>
                                         <td class="{{ $position }} {{ $i==12 ? 'P':'' }} text-center">{{ $position }}</td>
                                         <td>
-
-                                            <select disabled data-position="{{ $position }}" name="sel_numero_maglia[{{ $i }}]" class="form-control">
-                                                <option value="0">-</option>
+                                            <input type="hidden" name="numero_maglia[{{ $i }}]" value="{{ $p->formazione->numero_maglia or 0 }}" />
+                                            <select data-position="{{ $position }}" name="sel_numero_maglia[{{ $i }}]" class="form-control">
+                                                <option value="0">Seleziona...</option>
                                                 @foreach($players as $p)
                                                     <?php
                                                     if(isset($p->formazione->numero_maglia) AND $p->formazione->numero_maglia == $i):
@@ -251,8 +333,16 @@
                                             </select>
                                         </td>
                                         <td style="display: table-cell; vertical-align: middle">
-
-
+                                            <button
+                                                    data-toggle="tooltip"
+                                                    data-original-title="Rimuovi Calciatore"
+                                                    data-id="btnPosRemove{{ $i }}"
+                                                    data-maglia="{{ $i }}"
+                                                    value=""
+                                                    type="button"
+                                                    class="btn btn-link btn-xs pull-right">
+                                                <i class="fa fa-ban fa-fw"></i>
+                                            </button>
                                         </td>
                                     </tr>
 
@@ -263,8 +353,20 @@
 
                             </div><!-- /.col -->
 
+
+
                         </div><!-- /.row -->
 
+
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa fa-save fa-fw"></i>
+                                Salva Formazione
+                            </button>
+                        </div>
+
+                    </form>
 
                     <?php else: ?>
 

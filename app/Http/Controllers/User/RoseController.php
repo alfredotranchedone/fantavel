@@ -27,7 +27,6 @@ class RoseController extends Controller {
         //$prossima_giornata = Calendario::nextGiornata()->first()->giornata;
 
         $usid = Auth::user()->id;
-
         $teamId = Team::select(['id'])->where('user_id',$usid)->first()->id;
 
         $players = Player::with('formazione')->where('teams_id',$teamId)->get();
@@ -73,41 +72,6 @@ class RoseController extends Controller {
 
 
 
-    public function getFormazione(){
-
-        $usid = Auth::user()->id;
-        $teamId = Team::where('user_id',$usid)->first()->id;
-
-        $giornataInfo = Calendario::nextGiornata()->first();
-        $prossima_giornata = $giornataInfo->giornata;
-        $dataGiornata = $giornataInfo->dataGiornata;
-        $dataConsegna = $giornataInfo->dataConsegna;
-
-
-        debug($prossima_giornata,$dataGiornata,$dataConsegna);
-
-        $players = Player::with('formazione')->where('teams_id',$teamId)->get();
-
-        $team = Team::find($teamId,['name','modulo_id']);
-
-        $formazione = Formation::where('teams_id',$teamId)
-            ->where('numero_maglia','>',0)
-            ->orderBy('numero_maglia')
-            ->get();
-
-
-        $moduli = Moduli::all()->sortByDesc('modificatore');
-
-        return view('pages.admin.rose.formazione_index',[
-            'players' => $players,
-            'teamId' => $teamId,
-            'team' => $team,
-            'formazione' => $formazione,
-            'moduli' => $moduli,
-            'prossima_giornata' => $prossima_giornata
-        ]);
-
-    }
 
     public function postIndex(Request $request){
 
@@ -156,7 +120,7 @@ class RoseController extends Controller {
     }
 
 
-
+/*
     public function anyAssign(Request $request, $id)
     {
 
@@ -184,13 +148,23 @@ class RoseController extends Controller {
         ]);
 
     }
+*/
 
+    public function rosa()
+    {
 
-    private function checkDataConsegna(){
-        
+        $usid = Auth::user()->id;
+        $team_info = Team::select(['name','id'])->where('user_id',$usid)->first();
+        $players = Player::where('teams_id',$team_info->id)->get();
+
+        return view('pages.users.rose.show',[
+            'team' => $team_info,
+            'players' => $players,
+        ]);
+
     }
-    
-    
+
+
     
     
 }

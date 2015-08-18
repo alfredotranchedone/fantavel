@@ -56,6 +56,9 @@ Route::get('user', 'HomeController@index');
 Route::group(['prefix' => 'user','middleware' => ['auth']], function() {
 
     Route::controllers(['formazione' => 'User\RoseController']);
+    Route::controllers(['calendario' => 'User\CalendarioController']);
+    Route::controllers(['classifica' => 'User\ClassificaController']);
+    Route::get('rosa','User\RoseController@rosa');
     // Route::controllers(['formazione' => 'User\CalendarioController']);
 
 });
