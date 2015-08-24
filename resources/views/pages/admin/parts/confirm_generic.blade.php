@@ -5,11 +5,11 @@
 
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-    <button type="button" class="btn btn-{{ $buttonClass or 'primary' }} btn-md" onclick="jQuery('#confirmContainer').slideToggle();">
+    <button type="button" class="btn btn-{{ $buttonClass or 'primary' }} btn-md" onclick="jQuery(this).next('.confirmContainer').slideToggle();">
         <i class="fa {{ $buttonIconClass or 'fa-exclamation-circle' }} fa-fw"></i> {{ $buttonText or 'Conferma Operazione' }}
     </button>
 
-    <div id="confirmContainer"  style="display: none; margin-top: 15px">
+    <div class="confirmContainer"  style="display: none; margin-top: 15px">
         <p>Per proseguire con l'operazione, scrivi "CONFIRM" nel campo sottostante.</p>
         <div class="input-group">
             <input type="text" name="confirm" class="form-control" autocomplete="off" />

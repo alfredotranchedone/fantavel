@@ -15,6 +15,7 @@ use App\Team;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
 class CalendarioController extends Controller {
@@ -598,10 +599,16 @@ class CalendarioController extends Controller {
 
             //echo '<h3>Team '.$team_id.':</h3>';
 
+            // Conserva modulo, per successivo eventuale ricalcolo
+            $modulo_effettivo = [];
+
             foreach ($giocatore as $numero_maglia => $m) :
 
                 $mp = $m['punti'];
                 $ruolo = $m['ruolo'];
+
+                if($mp>0)
+                    $modulo_effettivo[] = $ruolo;
 
 
                 // gestisci sostituzione
@@ -640,6 +647,8 @@ class CalendarioController extends Controller {
 
                             // aggiungi punteggio della sostituzione
                             $totale_squadra += $r['punti'];
+
+                            $modulo_effettivo[] = $ruolo;
 
                             // esci dal ciclo
                             break;
@@ -680,9 +689,14 @@ class CalendarioController extends Controller {
 
             }
 
+
+            /**
+             * TODO COMPLETARE PROCEDURA SOSTITUZIONI!!!
+             */
+            dd($modulo_effettivo, array_count_values($modulo_effettivo));
             $goal_fatti = $this->calcolaGoals( $totale_squadra + $moduloModificatore );
 
-            // Salva risultato
+            /* Salva risultato */
             $risultato = new Result();
             $risultato->giornata    = $giornata;
             $risultato->teams_id    = $team_id;
@@ -918,6 +932,46 @@ class CalendarioController extends Controller {
         }
 
         return $goal;
+
+    }
+
+
+    public function postSaveNewResult(Request $request)
+    {
+        if($request->input('confirm') === 'CONFIRM') {
+
+            $v = Validator::make($request->all(), [
+                'giornata' => 'required',
+                'match' => 'required',
+                'team_id' => 'required',
+                'new_result' => 'required|numeric',
+            ]);
+
+            if ($v->fails())
+            {
+                return redirect()->back()->withErrors($v->errors());
+            }
+
+            $res = Result::whereGiornataAndTeamsId($request->input('giornata'),$request->input('team_id'))->first();
+            if($res->result <> $request->input('new_result')) {
+                $res->result = $request->input('new_result');
+                $res->save();
+            }
+
+            $msg = 'Risultato Aggiornato Correttamente!';
+            $msgType = 'success';
+
+        } else {
+
+            $msg = 'Operazione non confermata!';
+            $msgType = 'warning';
+
+        }
+
+
+        return redirect('admin/calendario/match/'.$request->input('match'))
+            ->with('message', $msg)
+            ->with('messageType',$msgType);
 
     }
 

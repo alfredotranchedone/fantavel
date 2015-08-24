@@ -2,7 +2,8 @@
     <div class="col-md-12">
 
         <?php
-            if(Auth::user()->levels_level == 0){
+            $user_level = Auth::user()->levels_level;
+            if($user_level == 0){
                 $base_url = 'admin';
             } else {
                 $base_url = 'user';
@@ -32,19 +33,53 @@
 
                 <div class="row">
                   <div class="col-md-6">
+                      <table class="table table-bordered">
+                          <tr class="bg-green-gradient lead">
+                              <th width="20"><i class="fa fa-users fa-fw"></i> </th>
+                              <th colspan="2">{{ $match->team_1_nome }}</th>
+                          </tr>
+                          <tr>
+                              <td><i class="fa fa-futbol-o fa-fw"></i></td>
+                              <th width="40%">Gol</th>
+                              <td class="lead">{{ $team_1_result->goal or '-' }}</td>
+                          </tr>
+                          <tr>
+                              <td><i class="fa fa-diamond fa-fw"></i></td>
+                              <th>Punteggio</th>
+                              <td class="lead">
+                                {{ $team_1_result->result or '-' }}
+                                @if($team_1_result->result)
+                                    @if($team_1_result->created_at != $team_1_result->updated_at)
+                                          <a href="#alertResultContainer"
+                                             class="text-red"
+                                             data-toggle="tooltip"
+                                             data-original-title="Il Punteggio Totale è stato modificato dall'Amministratore!">
+                                              <i class="fa fa-warning fa-fw"></i>
+                                          </a>
 
-                      <h4 class="text-center">{{ $match->team_1_nome }}</h4>
-                      <h4 class="text-center"><i class="fa fa-futbol-o fa-fw"></i> <b>{{ $team_1_result->goal or '-' }}</b></h4>
-                      <h4 class="text-center"><i class="fa fa-diamond fa-fw"></i> <b>{{ $team_1_result->result or '-'}}</b></h4>
-                      <h4 class="text-center"><i class="fa fa-cubes fa-fw"></i> <b>{{ $team_1_result->name or '-'}}</b> ({{ $team_1_result->modificatore or '-'}})</h4>
+                                    @endif
+                                @endif
+                              </td>
+                          </tr>
+                          <tr>
+                              <td><i class="fa fa-cubes fa-fw"></i></td>
+                              <th>Modulo Iniziale</th>
+                              <td class="lead">{{ $team_1_result->name or '-' }} ({{ $team_1_result->modificatore or '-'}})</td>
+                          </tr>
+                          <tr>
+                              <td><i class="fa fa-home fa-fw"></i></td>
+                              <th>Fattore Campo</th>
+                              <td>
+                                  @if($match->fattore_campo == 1)
+                                      <i class="fa fa-check-square-o fa-fw"></i> (+2)
+                                  @else
+                                      <i class="fa fa-square-o fa-fw"></i> (0)
+                                  @endif
+                              </td>
+                          </tr>
+                      </table>
 
-                      <h4 class="text-center"><i class="fa fa-home fa-fw"></i>
-                          @if($match->fattore_campo == 1)
-                              <i class="fa fa-check-square-o fa-fw"></i> (+2)
-                          @else
-                              <i class="fa fa-square-o fa-fw"></i> (0)
-                          @endif
-                      </h4>
+
 
                       <table class="table table-bordered table-striped table-hover">
 
@@ -127,18 +162,83 @@
 
                       </table>
 
+                      <a id="alertResultContainer"></a>
+                      @if($team_1_result->created_at != $team_1_result->updated_at)
+                          <p class="text-red">
+                              <small><i class="fa fa-asterisk fa-fw"></i></small>
+                              <i>Questo punteggio è stato modificato dall'Admin in data {{ $team_1_result->updated_at->tz('Europe/Rome')->format('d/m/Y H:i:s') }}</i>
+                          </p>
+                      @endif
+
+                      @if( ($user_level == 0) AND ($team_1_result AND $team_2_result))
+
+                          <button type="button" class="btn btn-link"  onclick="jQuery('#modResultContainer').slideToggle();"><i class="fa fa-angle-right fa-fw"></i>Modifica Punteggio</button>
+
+                          <div id="modResultContainer" class="well well-sm" style="display:none;">
+                              @include('pages.admin.parts.confirm_generic',[
+                              'prepend' => '
+                                <input type="hidden" name="giornata" class="form-control" value="'.$match->giornata.'" />
+                                <input type="hidden" name="team_id" class="form-control" value="'.$match->team_1_id.'" />
+                                <input type="hidden" name="match" class="form-control" value="'.$match->id.'" />
+                                <label>Inserisci Nuovo Risultato</label>
+                                <input type="text" name="new_result" class="form-control" autocomplete="off" placeholder="Inserisci il Risultato" value="'.$team_1_result->result.'"/>
+                                <hr>
+                              ',
+                              'form_action' => 'admin/calendario/save-new-result',
+                              'buttonText' => 'Salva Modifica Punteggio'
+                              ])
+                          </div>
+
+                      @endif
+
+
+
                   </div>
 
                   <div class="col-md-6">
 
-                      <h4 class="text-center">{{ $match->team_2_nome }}</h4>
-                      <h4 class="text-center"><i class="fa fa-futbol-o fa-fw"></i> <b>{{ $team_2_result->goal  or '-'  }}</b></h4>
-                      <h4 class="text-center"><i class="fa fa-diamond fa-fw"></i> <b>{{ $team_2_result->result  or '-' }}</b></h4>
-                      <h4 class="text-center"><i class="fa fa-cubes fa-fw"></i> <b>{{ $team_2_result->name  or '-' }}</b> ({{ $team_2_result->modificatore  or '-' }})</h4>
 
-                      <h4 class="text-center"><i class="fa fa-home fa-fw"></i>
-                          <i class="fa fa-square-o fa-fw"></i> (0)
-                      </h4>
+                      <table class="table table-bordered">
+                          <tr class="bg-green-gradient lead">
+                              <th width="20"><i class="fa fa-users fa-fw"></i> </th>
+                              <th colspan="2">{{ $match->team_2_nome }}</th>
+                          </tr>
+                          <tr>
+                              <td><i class="fa fa-futbol-o fa-fw"></i></td>
+                              <th width="40%">Gol</th>
+                              <td class="lead">{{ $team_2_result->goal or '-' }}</td>
+                          </tr>
+                          <tr>
+                              <td><i class="fa fa-diamond fa-fw"></i></td>
+                              <th>Punteggio</th>
+                              <td class="lead">
+                                  {{ $team_2_result->result or '-' }}
+                                  @if($team_2_result->result)
+                                      @if($team_2_result->created_at != $team_2_result->updated_at)
+                                          <a href="#alertResultContainer"
+                                             class="text-red"
+                                             data-toggle="tooltip"
+                                             data-original-title="Il Punteggio Totale è stato modificato dall'Amministratore!">
+                                              <i class="fa fa-warning fa-fw"></i>
+                                          </a>
+
+                                      @endif
+                                  @endif
+                              </td>
+                          </tr>
+                          <tr>
+                              <td><i class="fa fa-cubes fa-fw"></i></td>
+                              <th>Modulo Iniziale</th>
+                              <td class="lead">{{ $team_2_result->name or '-' }} ({{ $team_2_result->modificatore or '-'}})</td>
+                          </tr>
+                          <tr>
+                              <td><i class="fa fa-home fa-fw"></i></td>
+                              <th>Fattore Campo</th>
+                              <td><i class="fa fa-square-o fa-fw"></i> (0)</td>
+                          </tr>
+                      </table>
+
+
 
                       <table class="table table-bordered table-striped table-hover">
 
@@ -222,6 +322,37 @@
                           @endforelse
 
                       </table>
+
+                      <a id="alertResultContainer2"></a>
+                      @if($team_2_result->created_at != $team_2_result->updated_at)
+                          <p class="text-red">
+                              <small><i class="fa fa-asterisk fa-fw"></i></small>
+                              <i>Questo punteggio è stato modificato dall'Admin in data {{ $team_2_result->updated_at->tz('Europe/Rome')->format('d/m/Y H:i:s')}}</i>
+                          </p>
+                      @endif
+
+                      @if( ($user_level == 0) AND ($team_1_result AND $team_2_result))
+
+                          <button type="button" class="btn btn-link"  onclick="jQuery('#modResultContainer2').slideToggle();"><i class="fa fa-angle-right fa-fw"></i>Modifica Punteggio</button>
+
+                          <div id="modResultContainer2" class="well well-sm" style="display:none;">
+                              @include('pages.admin.parts.confirm_generic',[
+                              'prepend' => '
+                                <input type="hidden" name="giornata" class="form-control" value="'.$match->giornata.'" />
+                                <input type="hidden" name="team_id" class="form-control" value="'.$match->team_2_id.'" />
+                                <input type="hidden" name="match" class="form-control" value="'.$match->id.'" />
+                                <label>Inserisci Nuovo Risultato</label>
+                                <input type="text" name="new_result" class="form-control" autocomplete="off" placeholder="Inserisci il Risultato" value="'.$team_2_result->result.'"/>
+                                <hr>
+                              ',
+                              'form_action' => 'admin/calendario/save-new-result',
+                              'buttonText' => 'Salva Modifica Punteggio'
+                              ])
+                          </div>
+
+                      @endif
+
+
                   </div>
                 </div>
                 <!-- /.row -->
