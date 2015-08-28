@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Setup;
 use App\Fantavel\Utilities;
+use App\Fantavel\Scrape;
 
 class HomeController extends Controller {
 
@@ -30,7 +31,6 @@ class HomeController extends Controller {
 	 */
 	public function index()
 	{
-
 
         Carbon::setLocale('it');
 

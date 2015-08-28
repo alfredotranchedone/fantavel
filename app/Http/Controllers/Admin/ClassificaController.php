@@ -16,7 +16,7 @@ class ClassificaController extends Controller {
         $classifica = Classifica::getClassifica($last_giornata);
         $groups = Classifica::getGruppo($last_giornata);
 
-        if(!is_null($groups)) {
+        if( (!is_null($groups)) AND $classifica->count()>0 ) {
             $groups_id = $groups->first()->gruppo;
             $groups_name = Group::find($groups_id)->first(['name'])->name;
         }
