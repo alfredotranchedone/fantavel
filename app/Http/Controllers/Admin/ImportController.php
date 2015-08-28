@@ -50,7 +50,7 @@ class ImportController extends Controller {
 
                     $reader->noHeading();
 
-                    $reader->skip(3);
+                    $reader->skip(2);
 
                     $results = $reader->get();
 

@@ -119,7 +119,7 @@ class CalendarioController extends Controller {
 
                     $reader->noHeading();
 
-                    $reader->skip(3);
+                    $reader->skip(2);
 
                     $results = $reader->get();
 
@@ -693,7 +693,7 @@ class CalendarioController extends Controller {
             /**
              * TODO COMPLETARE PROCEDURA SOSTITUZIONI!!!
              */
-            dd($modulo_effettivo, array_count_values($modulo_effettivo));
+            //dd($modulo_effettivo, array_count_values($modulo_effettivo));
             $goal_fatti = $this->calcolaGoals( $totale_squadra + $moduloModificatore );
 
             /* Salva risultato */
