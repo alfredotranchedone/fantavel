@@ -18,7 +18,9 @@ class ClassificaController extends Controller {
 
         if( (!is_null($groups)) AND $classifica->count()>0 ) {
             $groups_id = $groups->first()->gruppo;
-            $groups_name = Group::find($groups_id)->first(['name'])->name;
+            $group = Group::find($groups_id);
+            if($group>0)
+                $groups_name = Group::find($groups_id)->first(['name'])->name;
         }
 
         return view('pages.admin.classifica.index',[
