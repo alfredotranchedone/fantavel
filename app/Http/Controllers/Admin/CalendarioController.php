@@ -8,6 +8,7 @@ use App\Formation;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Moduli;
 use App\Player;
 use App\Punteggi;
 use App\Result;
@@ -124,7 +125,7 @@ class CalendarioController extends Controller {
                     $results = $reader->get();
 
                     /*
-                     * Schema .xls Gazzetta:
+                     * Schema .xls Gazzetta SENZA TREQUARTISTA:
                      *   0 => "Cod."
                      *   1 => "Giocatore"
                      *   2 => "Squadra"
@@ -141,26 +142,45 @@ class CalendarioController extends Controller {
                      *   13 => "Assist"
                     */
 
+                    /*
+                     * Schema .xls Gazzetta CON TREQUARTISTA:
+                     *   0 => "Cod."
+                     *   1 => "Giocatore"
+                     *   2 => "Squadra"
+                     *   3 => "Ruolo"
+                     *   4 => "Ruolo2"
+                     *   5 => "Stato"
+                     *   6 => "Quotazione"
+                     *   7 => "Magic Punti"
+                     *   8 => "Voto Pagella"
+                     *   9 => "Gol"
+                     *   10 => "Ammonizione"
+                     *   11 => "Espulsione"
+                     *   12 => "Rigore Par/Sbag."
+                     *   13 => "Autorete"
+                     *   14 => "Assist"
+                    */
+
 
                     foreach($results as $row){
 
-                        $voto = ($row[7] == '-') ? null : $row[7];
-                        $magic_punti = ($row[6] == '-') ? null : $row[6];
+                        $voto = ($row[8] == '-') ? null : $row[8];
+                        $magic_punti = ($row[7] == '-') ? null : $row[7];
 
                         Punteggi::create([
                             'giornata' => $this->giornata,
                             'stagione_id' => $this->stagione_id,
                             'players_codice' => intval($row[0]),
                             'voto' => $voto,
-                            'quotazione' => $row[5],
-                            'stato' => $row[4],
+                            'quotazione' => $row[6],
+                            'stato' => $row[5],
                             'magic_punti' => $magic_punti,
-                            'gol' => $row[8],
-                            'ammonizione' => $row[9],
-                            'espulsione' => $row[10],
-                            'rigori' => $row[11],
-                            'autogol' => $row[12],
-                            'assist' => $row[13],
+                            'gol' => $row[9],
+                            'ammonizione' => $row[10],
+                            'espulsione' => $row[11],
+                            'rigori' => $row[12],
+                            'autogol' => $row[13],
+                            'assist' => $row[14],
                             ]);
 
                     }
@@ -515,6 +535,9 @@ class CalendarioController extends Controller {
         // estrai teams
         $teams = Team::all(['id']);
 
+        // estrai moduli
+        $moduli = Moduli::all(['name']);
+
 
         // per ogni team...
         $teams->each(function($t) use ($giornata){
@@ -582,7 +605,11 @@ class CalendarioController extends Controller {
         foreach ($titolariByTeam as $team_id => $giocatore) :
 
             $moduloId = Team::find($team_id,['modulo_id'])->modulo_id;
+            $moduloNome = Team::find($team_id)->modulo->name;
             $moduloModificatore = Team::find($team_id)->modulo->modificatore;
+
+            // converti modulo in array
+            $arrayModuloNome = explode('-',$moduloNome);
 
             $totale_squadra = 0;
             $sostituzioni = 0;
@@ -599,31 +626,29 @@ class CalendarioController extends Controller {
 
             //echo '<h3>Team '.$team_id.':</h3>';
 
-            // Conserva modulo, per successivo eventuale ricalcolo
-            $modulo_effettivo = [];
 
             foreach ($giocatore as $numero_maglia => $m) :
 
                 $mp = $m['punti'];
                 $ruolo = $m['ruolo'];
 
-                if($mp>0)
-                    $modulo_effettivo[] = $ruolo;
-
 
                 // gestisci sostituzione
                 if($mp == 0 ) {
+
                     /*
                     echo "s$sostituzioni";
                     echo "NO ";
                     */
 
+
                     foreach ($arrayRiserve as $key => $r) :
 
-                        if ($ruolo == $r['ruolo']) {
+                        if ($sostituzioni >= 3)
+                            break;
 
-                            if ($sostituzioni >= 3)
-                                break;
+                        // se ruolo riserva == ruolo giocatore da sostituire
+                        if ($ruolo == $r['ruolo']) {
 
                             // echo $r['codice'] . '-' . $r['maglia'] . $r['ruolo'] . '(' . $r['punti'] . ') ';
 
@@ -648,13 +673,105 @@ class CalendarioController extends Controller {
                             // aggiungi punteggio della sostituzione
                             $totale_squadra += $r['punti'];
 
-                            $modulo_effettivo[] = $ruolo;
+                            // esci dal ciclo
+                            break;
+
+                            // se ruolo riserva != ruolo giocatore da sostituire
+                        } else {
+
+                            if (count($arrayModuloNome) == 3) {
+                                // il modulo NON prevede trequartisti
+
+                                // controlla il ruolo del giocatore da sostituire
+                                switch ($ruolo) {
+                                    case 'D':
+                                        $arrayModuloNome[0]--;
+                                        break;
+                                    case 'C':
+                                        $arrayModuloNome[1]--;
+                                        break;
+                                    case 'A':
+                                        $arrayModuloNome[2]--;
+                                        break;
+                                }
+
+                                // controlla il ruolo del sostituto
+                                switch ($r['ruolo']) {
+                                    case 'D':
+                                        $arrayModuloNome[0]++;
+                                        break;
+                                    case 'C':
+                                        $arrayModuloNome[1]++;
+                                        break;
+                                    case 'A':
+                                        $arrayModuloNome[2]++;
+                                        break;
+                                }
+
+
+                            } elseif (count($arrayModuloNome) == 4) {
+                                // il modulo PREVEDE trequartisti
+
+                                // controlla il ruolo del giocatore da sostituire
+                                switch ($ruolo) {
+                                    case 'D':
+                                        $arrayModuloNome[0]--;
+                                        break;
+                                    case 'C':
+                                        $arrayModuloNome[1]--;
+                                        break;
+                                    case 'T':
+                                        $arrayModuloNome[2]--;
+                                        break;
+                                    case 'A':
+                                        $arrayModuloNome[3]--;
+                                        break;
+                                }
+
+                                // controlla il ruolo del sostituto
+                                switch ($r['ruolo']) {
+                                    case 'D':
+                                        $arrayModuloNome[0]++;
+                                        break;
+                                    case 'C':
+                                        $arrayModuloNome[1]++;
+                                        break;
+                                    case 'T':
+                                        $arrayModuloNome[2]++;
+                                        break;
+                                    case 'A':
+                                        $arrayModuloNome[3]++;
+                                        break;
+                                }
+
+
+                            }
+
+
+                            // controlla se l'eventuale nuovo modulo è legale
+                            $moduli->each(function ($m) use ($arrayModuloNome) {
+                                echo implode('-', $arrayModuloNome) . ' = ' . $m->name . ' ?<br>';
+                            });
+
+
+                            // rimuovi riserva
+                            unset($arrayRiserve[$key]);
+
+                            // conta sostituzione
+                            $sostituzioni++;
+
+                            // aggiungi punteggio della sostituzione
+                            $totale_squadra += $r['punti'];
 
                             // esci dal ciclo
                             break;
+
                         }
 
                     endforeach;
+
+
+
 
                 }
 
@@ -668,12 +785,16 @@ class CalendarioController extends Controller {
 
             endforeach;
 
-            /*
+
             echo '<p><b>Totale: '.$totale_squadra.'</b> + '. $moduloModificatore .'<br>';
             echo 'Totale Sostituzioni: '.$sostituzioni.'<br>';
             echo 'Modulo: '. Team::find($team_id)->modulo->name.'<br>';
             echo 'Modulo Modificatore: '. $moduloModificatore .'</p>';
-            */
+            echo 'SOST M:'.$moduloNome .' '. implode('-',$arrayModuloNome);
+            //.' '.$moduli;
+
+
+
 
 
             // controlla se il fattore campo è abilitato. Se sì, aggiungi il mod
@@ -710,6 +831,8 @@ class CalendarioController extends Controller {
 
         endforeach;
 
+
+        dd();
 
     }
 
