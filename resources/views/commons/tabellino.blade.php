@@ -48,15 +48,18 @@
                               <th>Punteggio</th>
                               <td class="lead">
                                 {{ $team_1_result->result or '-' }}
-                                @if($team_1_result->result)
-                                    @if($team_1_result->created_at != $team_1_result->updated_at)
-                                          <a href="#alertResultContainer"
-                                             class="text-red"
-                                             data-toggle="tooltip"
-                                             data-original-title="Il Punteggio Totale è stato modificato dall'Amministratore!">
-                                              <i class="fa fa-warning fa-fw"></i>
-                                          </a>
 
+                                @if($team_1_result)
+                                    @if($team_1_result->result)
+                                        @if($team_1_result->created_at != $team_1_result->updated_at)
+                                              <a href="#alertResultContainer"
+                                                 class="text-red"
+                                                 data-toggle="tooltip"
+                                                 data-original-title="Il Punteggio Totale è stato modificato dall'Amministratore!">
+                                                  <i class="fa fa-warning fa-fw"></i>
+                                              </a>
+
+                                        @endif
                                     @endif
                                 @endif
                               </td>
@@ -163,11 +166,14 @@
                       </table>
 
                       <a id="alertResultContainer"></a>
-                      @if($team_1_result->created_at != $team_1_result->updated_at)
-                          <p class="text-red">
-                              <small><i class="fa fa-asterisk fa-fw"></i></small>
-                              <i>Questo punteggio è stato modificato dall'Admin in data {{ $team_1_result->updated_at->tz('Europe/Rome')->format('d/m/Y H:i:s') }}</i>
-                          </p>
+
+                      @if($team_1_result)
+                          @if($team_1_result->created_at != $team_1_result->updated_at)
+                              <p class="text-red">
+                                  <small><i class="fa fa-asterisk fa-fw"></i></small>
+                                  <i>Questo punteggio è stato modificato dall'Admin in data {{ $team_1_result->updated_at->tz('Europe/Rome')->format('d/m/Y H:i:s') }}</i>
+                              </p>
+                          @endif
                       @endif
 
                       @if( ($user_level == 0) AND ($team_1_result AND $team_2_result))
@@ -213,15 +219,17 @@
                               <th>Punteggio</th>
                               <td class="lead">
                                   {{ $team_2_result->result or '-' }}
-                                  @if($team_2_result->result)
-                                      @if($team_2_result->created_at != $team_2_result->updated_at)
-                                          <a href="#alertResultContainer"
-                                             class="text-red"
-                                             data-toggle="tooltip"
-                                             data-original-title="Il Punteggio Totale è stato modificato dall'Amministratore!">
-                                              <i class="fa fa-warning fa-fw"></i>
-                                          </a>
+                                  @if($team_2_result)
+                                      @if($team_2_result->result)
+                                          @if($team_2_result->created_at != $team_2_result->updated_at)
+                                              <a href="#alertResultContainer"
+                                                 class="text-red"
+                                                 data-toggle="tooltip"
+                                                 data-original-title="Il Punteggio Totale è stato modificato dall'Amministratore!">
+                                                  <i class="fa fa-warning fa-fw"></i>
+                                              </a>
 
+                                          @endif
                                       @endif
                                   @endif
                               </td>
@@ -324,11 +332,13 @@
                       </table>
 
                       <a id="alertResultContainer2"></a>
-                      @if($team_2_result->created_at != $team_2_result->updated_at)
-                          <p class="text-red">
-                              <small><i class="fa fa-asterisk fa-fw"></i></small>
-                              <i>Questo punteggio è stato modificato dall'Admin in data {{ $team_2_result->updated_at->tz('Europe/Rome')->format('d/m/Y H:i:s')}}</i>
-                          </p>
+                      @if($team_2_result)
+                          @if($team_2_result->created_at != $team_2_result->updated_at)
+                              <p class="text-red">
+                                  <small><i class="fa fa-asterisk fa-fw"></i></small>
+                                  <i>Questo punteggio è stato modificato dall'Admin in data {{ $team_2_result->updated_at->tz('Europe/Rome')->format('d/m/Y H:i:s')}}</i>
+                              </p>
+                          @endif
                       @endif
 
                       @if( ($user_level == 0) AND ($team_1_result AND $team_2_result))
