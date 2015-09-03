@@ -101,6 +101,13 @@
             </div>
 
         </div>
+
+        <div class="col-md-6 col-xs-12 col-sm-12">
+
+            @include('commons.table_formation')
+
+        </div>
+
     </div>
 
 

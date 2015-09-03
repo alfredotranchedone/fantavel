@@ -94,47 +94,7 @@
 
         <div class="col-md-6 col-xs-12 col-sm-12">
 
-            <div class="box collapsed-box">
-                <div class="box-header with-border">
-                    <i class="fa fa-users fa-fw"></i>
-                    <h3 class="box-title">Visualizza Rosa</h3>
-                    <div class="box-tools pull-right">
-                        <button class="btn btn-box-tool" data-widget="collapse">
-                            <i class="fa fa-plus"></i>
-                        </button>
-                    </div>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-
-                    <table class="table table-condensed table-bordered">
-                        <tr>
-                            <th width="30px">#</th>
-                            <th>Codice</th>
-                            <th>Nome</th>
-                            <th>Ruolo</th>
-                        </tr>
-
-                        <?php $ii = 1; ?>
-                        @forelse($players as $pl)
-                            <tr>
-                                <td>{{ $ii }}.</td>
-                                <td>{{ $pl->codice }}</td>
-                                <td>{{ $pl->nominativo }}</td>
-                                <td>{{ $pl->ruolo }}</td>
-                            </tr>
-                            <?php $ii++; ?>
-                        @empty
-                            <tr>
-                                <td colspan="4">Nessuna rosa presente.</td>
-                            </tr>
-                        @endforelse
-
-                    </table>
-
-                    <p>&nbsp;</p>
-
-                </div><!-- /.box-body -->
-            </div>
+            @include('commons.table_formation')
 
         </div>
 

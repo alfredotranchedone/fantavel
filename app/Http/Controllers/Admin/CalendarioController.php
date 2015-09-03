@@ -623,6 +623,9 @@ class CalendarioController extends Controller {
 
             }
 
+            // Array Giocatori da sostituire
+            $arrayDaSostituire = [];
+
 
             //echo '<h3>Team '.$team_id.':</h3>';
 
@@ -641,137 +644,8 @@ class CalendarioController extends Controller {
                     echo "NO ";
                     */
 
-
-                    foreach ($arrayRiserve as $key => $r) :
-
-                        if ($sostituzioni >= 3)
-                            break;
-
-                        // se ruolo riserva == ruolo giocatore da sostituire
-                        if ($ruolo == $r['ruolo']) {
-
-                            // echo $r['codice'] . '-' . $r['maglia'] . $r['ruolo'] . '(' . $r['punti'] . ') ';
-
-                            /*
-                            // se la riserva ha 0, conteggia la sostituzione
-                            if($r['punti'] == 0){
-                                // rimuovi riserva
-                                unset( $arrayRiserve[$key] );
-                                // conta sostituzione
-                                $sostituzioni++;
-                                // esci dal ciclo
-                                break;
-                            }
-                            */
-
-                            // rimuovi riserva
-                            unset($arrayRiserve[$key]);
-
-                            // conta sostituzione
-                            $sostituzioni++;
-
-                            // aggiungi punteggio della sostituzione
-                            $totale_squadra += $r['punti'];
-
-                            // esci dal ciclo
-                            break;
-
-                            // se ruolo riserva != ruolo giocatore da sostituire
-                        } else {
-
-                            if (count($arrayModuloNome) == 3) {
-                                // il modulo NON prevede trequartisti
-
-                                // controlla il ruolo del giocatore da sostituire
-                                switch ($ruolo) {
-                                    case 'D':
-                                        $arrayModuloNome[0]--;
-                                        break;
-                                    case 'C':
-                                        $arrayModuloNome[1]--;
-                                        break;
-                                    case 'A':
-                                        $arrayModuloNome[2]--;
-                                        break;
-                                }
-
-                                // controlla il ruolo del sostituto
-                                switch ($r['ruolo']) {
-                                    case 'D':
-                                        $arrayModuloNome[0]++;
-                                        break;
-                                    case 'C':
-                                        $arrayModuloNome[1]++;
-                                        break;
-                                    case 'A':
-                                        $arrayModuloNome[2]++;
-                                        break;
-                                }
-
-
-                            } elseif (count($arrayModuloNome) == 4) {
-                                // il modulo PREVEDE trequartisti
-
-                                // controlla il ruolo del giocatore da sostituire
-                                switch ($ruolo) {
-                                    case 'D':
-                                        $arrayModuloNome[0]--;
-                                        break;
-                                    case 'C':
-                                        $arrayModuloNome[1]--;
-                                        break;
-                                    case 'T':
-                                        $arrayModuloNome[2]--;
-                                        break;
-                                    case 'A':
-                                        $arrayModuloNome[3]--;
-                                        break;
-                                }
-
-                                // controlla il ruolo del sostituto
-                                switch ($r['ruolo']) {
-                                    case 'D':
-                                        $arrayModuloNome[0]++;
-                                        break;
-                                    case 'C':
-                                        $arrayModuloNome[1]++;
-                                        break;
-                                    case 'T':
-                                        $arrayModuloNome[2]++;
-                                        break;
-                                    case 'A':
-                                        $arrayModuloNome[3]++;
-                                        break;
-                                }
-
-
-                            }
-
-
-                            // controlla se l'eventuale nuovo modulo è legale
-                            $moduli->each(function ($m) use ($arrayModuloNome) {
-                                echo implode('-', $arrayModuloNome) . ' = ' . $m->name . ' ?<br>';
-                            });
-
-
-                            // rimuovi riserva
-                            unset($arrayRiserve[$key]);
-
-                            // conta sostituzione
-                            $sostituzioni++;
-
-                            // aggiungi punteggio della sostituzione
-                            $totale_squadra += $r['punti'];
-
-                            // esci dal ciclo
-                            break;
-
-                        }
-
-                    endforeach;
-
-
-
+                    // popola array ruoli da sostituire
+                    $arrayDaSostituire[] = $m['ruolo'];
 
                 }
 
@@ -786,12 +660,178 @@ class CalendarioController extends Controller {
             endforeach;
 
 
+            // assegnazione iniziale modulo effettivo (che potrebbe variare con le sostituzioni
+            $arrayModuloEffettivo = $arrayModuloNome;
+
+            /*
+            echo '<hr>PRE ';
+            echo json_encode($arrayDaSostituire);
+            echo '<br>';
+            echo json_encode($arrayRiserve);
+            */
+
+            // echo '<hr> Tot: '.$totale_squadra;
+
+            $k=1;
+            foreach ($arrayDaSostituire as $sost) {
+
+                if ($sostituzioni >= 3)
+                    break;
+
+                // cicla prima per vedere se ci sono riserve con lo stesso ruolo
+                foreach ($arrayRiserve as $key => $r) {
+
+                    // se ruolo riserva == ruolo giocatore da sostituire
+                    if ($sost == $r['ruolo']) {
+
+                        // rimuovi riserva
+                        unset($arrayRiserve[$key]);
+
+                        // conta sostituzione
+                        $sostituzioni++;
+
+                        // aggiungi punteggio della sostituzione
+                        $totale_squadra += $r['punti'];
+
+                        // esci dal ciclo
+                        continue 2;
+                    }
+
+                }
+
+                reset($arrayRiserve);
+
+                // echo '<hr>INFRA '.$k.'.  ';
+                // echo json_encode($arrayRiserve);
+
+                // cicla per riserve con altro ruolo, avendo cura di modificare il modulo
+                // e controllare se il modulo effettivo è in effetti "lecito"
+                foreach ($arrayRiserve as $key => $r) {
+
+                    // echo '<br>'. $r['ruolo'].'<br>';
+
+                    // Non contare il Portiere, se ancora presente
+                    if ($r['ruolo'] == 'P') {
+                        continue;
+                    }
+
+                    // modulo temporaneo: diventa effettivo se la sostituzione va a buon fine
+                    $arrayModuloTemp = $arrayModuloEffettivo;
+
+                    // il modulo NON prevede trequartisti
+                    if (count($arrayModuloTemp) == 3) {
+
+                        // controlla il ruolo del giocatore da sostituire
+                        switch ($sost) {
+                            case 'D':
+                                $arrayModuloTemp[0]--;
+                                break;
+                            case 'C':
+                                $arrayModuloTemp[1]--;
+                                break;
+                            case 'A':
+                                $arrayModuloTemp[2]--;
+                                break;
+                        }
+
+                        // controlla il ruolo del sostituto
+                        switch ($r['ruolo']) {
+                            case 'D':
+                                $arrayModuloTemp[0]++;
+                                break;
+                            case 'C':
+                                $arrayModuloTemp[1]++;
+                                break;
+                            case 'A':
+                                $arrayModuloTemp[2]++;
+                                break;
+                        }
+
+                        // il modulo PREVEDE trequartisti
+                    } elseif (count($arrayModuloTemp) == 4) {
+
+                        // controlla il ruolo del giocatore da sostituire
+                        switch ($sost) {
+                            case 'D':
+                                //echo '### CASE D <br>';
+                                $arrayModuloTemp[0]--;
+                                break;
+                            case 'C':
+                                $arrayModuloTemp[1]--;
+                                //echo '### CASE C <br>';
+                                break;
+                            case 'T':
+                                $arrayModuloTemp[2]--;
+                                //echo '### CASE T <br>';
+                                break;
+                            case 'A':
+                                $arrayModuloTemp[3]--;
+                                //echo '### CASE A <br>';
+                                break;
+                        }
+
+                        // controlla il ruolo del sostituto
+                        switch ($r['ruolo']) {
+                            case 'D':
+                                $arrayModuloTemp[0]++;
+                                break;
+                            case 'C':
+                                $arrayModuloTemp[1]++;
+                                break;
+                            case 'T':
+                                $arrayModuloTemp[2]++;
+                                break;
+                            case 'A':
+                                $arrayModuloTemp[3]++;
+                                break;
+                        }
+
+
+                    }
+
+                    //echo '*** '. implode('-',$arrayModuloTemp).' ***';
+
+                    // controlla validità del modulo
+                    if (in_array(implode('-', $arrayModuloTemp), array_flatten($moduli->toArray()))) {
+
+                        // modulo ok: conserva la modifica
+                        $arrayModuloEffettivo = $arrayModuloTemp;
+
+                        // rimuovi riserva
+                        unset($arrayRiserve[$key]);
+
+                        // conta sostituzione
+                        $sostituzioni++;
+
+                        // aggiungi punteggio della sostituzione
+                        $totale_squadra += $r['punti'];
+
+                        // esci dal ciclo
+                        break;
+
+                    }
+
+                }
+
+                // echo '<br>Tot: '.$totale_squadra;
+                $k++;
+            }
+
+
+
+
+            /*
             echo '<p><b>Totale: '.$totale_squadra.'</b> + '. $moduloModificatore .'<br>';
             echo 'Totale Sostituzioni: '.$sostituzioni.'<br>';
             echo 'Modulo: '. Team::find($team_id)->modulo->name.'<br>';
             echo 'Modulo Modificatore: '. $moduloModificatore .'</p>';
-            echo 'SOST M:'.$moduloNome .' '. implode('-',$arrayModuloNome);
-            //.' '.$moduli;
+            echo 'Modulo Nome:'.$moduloNome .' EFF '. implode('-',$arrayModuloEffettivo);
+
+            echo '<br>POST ';
+            echo json_encode($arrayDaSostituire);
+            echo json_encode($arrayRiserve);
+
+            */
 
 
 
@@ -832,7 +872,6 @@ class CalendarioController extends Controller {
         endforeach;
 
 
-        dd();
 
     }
 

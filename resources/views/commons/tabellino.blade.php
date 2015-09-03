@@ -9,10 +9,12 @@
                 $base_url = 'user';
             }
         ?>
-        <a href="{{ url($base_url) }}" class="btn btn-default btn-md"><i class="fa fa-home fa-fw"></i> Home</a>
-        &nbsp;
-        <a href="{{ url($base_url.'/calendario') }}" class="btn btn-default btn-md"><i class="fa fa-calendar fa-fw"></i> Calendario</a>
 
+        @if($user_level == 0)
+            <a href="{{ url($base_url) }}" class="btn btn-default btn-md"><i class="fa fa-home fa-fw"></i> Home</a>
+            &nbsp;
+            <a href="{{ url($base_url.'/calendario') }}" class="btn btn-default btn-md"><i class="fa fa-calendar fa-fw"></i> Calendario</a>
+        @endif
 
 
         <div class="box marginTop">
@@ -24,9 +26,7 @@
                 @endif
                 <h3 class="box-title">Giornata {{ $match->giornata }}  </h3>
                 <div class="box-tools pull-right">
-                    <!-- Buttons, labels, and many other things can be placed here! -->
-                    <!-- Here is a label for example -->
-                    <i class="fa fa-calendar fa-fw"></i> {{ $match->dataGiornata }}
+                    <i class="fa fa-calendar fa-fw" data-toggle="tooltip" data-original-title="Data Giornata"></i> {{ $match->dataGiornata }}
                 </div><!-- /.box-tools -->
             </div><!-- /.box-header -->
             <div class="box-body">
@@ -149,7 +149,7 @@
 
                                       @if(Auth::user()->levels_level != 0)
                                           @if(Auth::user()->id == $match->team_1_user_id)
-                                              <a href="{{ url($base_url.'/rose/formazione/'.$match->team_1_id) }}" class="btn btn-success btn-md">
+                                              <a href="{{ url($base_url.'/formazione') }}" class="btn btn-success btn-md">
                                                   <i class="fa fa-plus fa-fw"></i> Aggiungi Formazione
                                               </a>
                                           @endif

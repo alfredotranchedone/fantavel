@@ -58,11 +58,19 @@ class RoseController extends Controller {
 
         $canSubmitFormation = Utilities::canSubmitFormation($dataConsegna,'Y-m-d H:i:s');
 
+        if($prossima_giornata == 1){
+            return view('pages.users.rose.formazione_index', $vars);
+        }
+
         if($canSubmitFormation) {
             return view('pages.users.rose.formazione_index', $vars);
         } else {
             Carbon::setLocale('it');
-            $scadenza = Carbon::now('Europe/Rome')->diffForHumans(Carbon::createFromFormat('Y-m-d H:i:s',$dataConsegna),true);
+            if($dataConsegna) {
+                $scadenza = Carbon::now('Europe/Rome')->diffForHumans(Carbon::createFromFormat('Y-m-d H:i:s', $dataConsegna), true);
+            } else {
+                $scadenza = 0;
+            }
             $vars['scadenza'] = $scadenza;
             return view('pages.users.rose.formazione_no_submit', $vars);
         }

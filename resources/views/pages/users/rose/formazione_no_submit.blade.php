@@ -37,10 +37,12 @@
 
     <hr style="border-color: #fff"/>
 
+    @if($scadenza != 0)
     <div class="alert alert-danger">
         <i class="fa fa-warning fa-fw"></i> <b>Attenzione! Giornata in corso!</b><br/>
         Non è più possibile modificare la formazione! La scadenza era {{ $scadenza }} fa.
     </div>
+    @endif
 
     <div class="row">
 
