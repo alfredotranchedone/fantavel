@@ -149,7 +149,7 @@
 
               </div><!-- /.box-body -->
               <div class="box-footer">
-                  @if($canSubmitFormation)
+                  @if($canSubmitFormation || $lastGiornata->giornata == 0 )
                     <a class="btn btn-primary" href="{{ url('user/formazione') }}">
                         <i class="fa fa-angle-right fa-fw"></i>
                         Vai a Formazione
