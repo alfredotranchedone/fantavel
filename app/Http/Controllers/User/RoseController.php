@@ -57,10 +57,11 @@ class RoseController extends Controller {
         ];
 
         $canSubmitFormation = Utilities::canSubmitFormation($dataConsegna,'Y-m-d H:i:s');
-
+        /*
         if($prossima_giornata == 1){
             return view('pages.users.rose.formazione_index', $vars);
         }
+        */
 
         if($canSubmitFormation) {
             return view('pages.users.rose.formazione_index', $vars);

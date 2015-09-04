@@ -113,6 +113,7 @@ class UserController extends Controller {
 	 */
 	public function update(EditUserRequest $request, $id)
 	{
+
         $user = User::find($id);
 
         $user->name = $request->input('nome');

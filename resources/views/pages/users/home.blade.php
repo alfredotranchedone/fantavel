@@ -135,7 +135,7 @@
                               <td>{{ $match->team1 }} - {{ $match->team2 }}</td>
                               <td>-</td>
                               <td>-</td>
-                              <td><a href="#">dettagli</a></td>
+                              <td><a href="{{ url('user/calendario/match/'.$match->id) }}">dettagli</a></td>
                           </tr>
                           <?php $i++; ?>
                       @empty
@@ -149,7 +149,7 @@
 
               </div><!-- /.box-body -->
               <div class="box-footer">
-                  @if($canSubmitFormation || $lastGiornata->giornata == 0 )
+                  @if($canSubmitFormation)
                     <a class="btn btn-primary" href="{{ url('user/formazione') }}">
                         <i class="fa fa-angle-right fa-fw"></i>
                         Vai a Formazione

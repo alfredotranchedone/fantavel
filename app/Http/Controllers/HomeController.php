@@ -98,6 +98,7 @@ class HomeController extends Controller {
 
                 $canSubmitFormation = Utilities::canSubmitFormation($dc);
 
+
                 $user_team_id = Team::UserTeamId($user->id)->first()->id;
                 $media = Result::AverageResult($user_team_id)->first()->media;
 
