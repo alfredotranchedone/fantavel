@@ -78,6 +78,13 @@ class HomeController extends Controller {
                 ->format('d/m/Y H:i:s');
         }
 
+
+        /**
+         * TODO bugfix
+         *
+        */
+
+
         switch ($user->levels_level) {
 
             case 0:

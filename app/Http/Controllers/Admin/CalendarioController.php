@@ -455,7 +455,7 @@ class CalendarioController extends Controller {
         for ($i = 0; $i < $giornate*$gironi; $i++)
         {
             /* stampa le partite di questa giornata */
-            $outputEcho .= '<div class="col-md-3 col-sm-4 col-xs-12">';
+            $outputEcho .= '<div class="col-md-4 col-sm-6 col-xs-12">';
             $outputEcho .= '<p style="border-bottom: 1px dashed #eeeeee;"><b>'.($i+1).'a Giornata</b></p>';
 
 
