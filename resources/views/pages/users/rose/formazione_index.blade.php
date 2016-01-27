@@ -256,7 +256,7 @@
                                                     ?>
 
                                                     @if( strtoupper($p->ruolo) == $position )
-                                                        <option {{ $sel }} value="{{ $p->codice }}">{{ $p->nominativo }} ({{ $p->ruolo }})</option>
+                                                        <option {{ $sel }} value="{{ $p->codice }}">{{ $p->nominativo }} ({{ $p->ruolo }}) {{ $p->codice }}</option>
                                                     @endif
                                                 @endforeach
                                             </select>

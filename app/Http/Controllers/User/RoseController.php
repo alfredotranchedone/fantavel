@@ -24,8 +24,6 @@ class RoseController extends Controller {
 	public function getIndex()
 	{
 
-        //$prossima_giornata = Calendario::nextGiornata()->first()->giornata;
-
         $usid = Auth::user()->id;
         $teamId = Team::select(['id'])->where('user_id',$usid)->first()->id;
 
@@ -33,17 +31,53 @@ class RoseController extends Controller {
 
         $team = Team::find($teamId,['name','modulo_id']);
 
-        $formazione = Formation::where('teams_id',$teamId)
-            ->where('numero_maglia','>',0)
-            ->orderBy('numero_maglia')
-            ->get();
-
         $moduli = Moduli::all()->sortByDesc('modificatore');
 
         $prossima_giornata = Calendario::nextGiornata()->first()->giornata;
         $giornataInfo = Calendario::where('giornata',$prossima_giornata)->first();
         $dataGiornata = $giornataInfo->dataGiornata;
         $dataConsegna = $giornataInfo->dataConsegna;
+
+        $players = Player::with(['formazione' => function($q) use ($prossima_giornata){
+                $q->where('giornata_id',$prossima_giornata);
+            }])
+            ->where('teams_id',$teamId)
+            ->get();
+
+
+        $formazione = Formation::where('teams_id',$teamId)
+            ->where('numero_maglia','>',0)
+
+                // da controllare
+                ->where('giornata_id',$prossima_giornata)
+
+            ->orderBy('numero_maglia')
+            ->get();
+
+
+
+        // se formazione è vuota...
+        if($formazione->isEmpty()){
+
+            // ...prendi formazione dell'ultima giornata
+
+            $players = Player::with(['formazione' => function($q) use ($prossima_giornata){
+                $q->where('giornata_id',$prossima_giornata - 1);
+            }])
+                ->where('teams_id',$teamId)
+                ->get();
+
+            $formazione = Formation::where('teams_id',$teamId)
+                ->where('numero_maglia','>',0)
+
+                // da controllare
+                ->where('giornata_id',$prossima_giornata - 1)
+
+                ->orderBy('numero_maglia')
+                ->get();
+        }
+
+
 
         $vars = [
             'players' => $players,
@@ -93,6 +127,7 @@ class RoseController extends Controller {
             ->where('giornata_id',$prossima_giornata)
             ->delete();
 
+
         foreach($numero_maglia as $numero=>$codice){
 
             $player = new Formation();
@@ -103,7 +138,6 @@ class RoseController extends Controller {
             $player->save();
 
         }
-
 
         return redirect('user/formazione')
             ->with('message','Formazione Salvata')

@@ -15,7 +15,7 @@ class Result extends Model {
 
     public function scopeAverageResult($query, $teamId){
         return $query
-            ->select(DB::raw('avg(result) as media'))
+            ->select(DB::raw('round(avg(result),2) as media'))
             ->where('teams_id',$teamId);
     }
 
