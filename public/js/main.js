@@ -83,6 +83,10 @@ $(document).ready(function() {
 
 
 
+    // spegni evidenziazzione riga
+    $('#playersDataTable.no-highlight tbody').off('click');
+
+
     var assigned = [];
 
     $('button[data-id*="btnPosRemove"]').each(function(i){

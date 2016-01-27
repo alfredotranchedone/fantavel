@@ -110,6 +110,8 @@
             <li class="{{ Menu::activeMenu('user/calendario') }}"><a href="{{ url('user/calendario') }}"><span>Calendario</span></a>
             </li>
             <li class="{{ Menu::activeMenu('user/rosa') }}"><a href="{{ url('user/rosa') }}"><span>Rosa</span></a></li>
+            <li class="{{ Menu::activeMenu('user/players') }}"><a href="{{ url('user/players') }}"><i class="fa fa-child"></i>
+                    <span>Calciatori</span></a></li>
             <li class="header">&nbsp;</li>
             <li><a href="{{ url('auth/logout') }}"><i class="fa fa-unlock fa-fw text-red"></i> Esci</a></li>
 
