@@ -28,6 +28,8 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function()
     Route::resource('team', 'Admin\TeamController');
     Route::resource('moduli', 'Admin\ModuliController');
     Route::resource('classifica', 'Admin\ClassificaController');
+    Route::resource('players', 'Admin\Players');
+
 
     Route::group(['prefix'=>'config'],function(){
         Route::resource('groups', 'Admin\GroupsController');
@@ -37,6 +39,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function()
 
     Route::get('import', 'Admin\ImportController@index');
     Route::post('import/upload', 'Admin\ImportController@upload');
+    Route::post('import/player', 'Admin\ImportController@player');
 
     Route::controllers([
         'calendario' => 'Admin\CalendarioController',

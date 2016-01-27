@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Player;
+use App\Team;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -17,9 +18,44 @@ class ImportController extends Controller {
 	public function index()
 	{
 
-        return view('pages.admin.import.index',['player_count' => Player::count()]);
+        return view('pages.admin.import.index',[
+            'player_count' => Player::count(),
+            'teams' => Team::all()
+        ]);
 
 	}
+
+
+    public function player(Request $request)
+    {
+        $this->validate($request,[
+           'nominativo' => 'required',
+           'ruolo' => 'required',
+           'codice' => 'required|numeric|unique:players,codice',
+           'teams_id' => 'numeric'
+        ],[
+            'required' => 'Il campo :attribute è richiesto.',
+            'numeric' => 'Il campo :attribute deve essere un numero.',
+            'codice.unique' => 'Il Codice deve essere unico.',
+        ]);
+
+        $player = new Player();
+        $player->nominativo = $request->nominativo;
+        $player->ruolo = $request->ruolo;
+        $player->codice = $request->codice;
+        $player->teams_id = $request->teams_id;
+
+        if($player->save()) {
+            return redirect('admin/import')
+                ->with('message', 'Calciatore aggiunto Correttamente!')
+                ->with('messageType', 'success');
+        } else {
+            return redirect('admin/import')
+                ->with('message', 'Upload NON Eseguito!')
+                ->with('messageType','warning');
+        }
+
+    }
 
 
     public function upload(Request $request)

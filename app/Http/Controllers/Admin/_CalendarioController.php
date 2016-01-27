@@ -14,7 +14,6 @@ use App\Punteggi;
 use App\Result;
 use App\Team;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -602,16 +601,12 @@ class CalendarioController extends Controller {
 
         //
         $counter_team = 0;
-
-        // inizializza array per aggiornare risultati e moduli
-        $totale_partita = [];
-
         // conteggia i totali
         foreach ($titolariByTeam as $team_id => $giocatore) :
 
             $moduloId = Team::find($team_id,['modulo_id'])->modulo_id;
             $moduloNome = Team::find($team_id)->modulo->name;
-            // $moduloModificatore = Team::find($team_id)->modulo->modificatore;
+            $moduloModificatore = Team::find($team_id)->modulo->modificatore;
 
             // converti modulo in array
             $arrayModuloNome = explode('-',$moduloNome);
@@ -623,9 +618,8 @@ class CalendarioController extends Controller {
             $arrayRiserve = [];
             for($k=12;$k<=24;$k++){
 
-                if(array_key_exists($k,$giocatore) AND !is_null($giocatore[$k]['punti'])) {
+                if(array_key_exists($k,$giocatore))
                     $arrayRiserve[$k] = $giocatore[$k];
-                }
 
             }
 
@@ -823,6 +817,9 @@ class CalendarioController extends Controller {
                 $k++;
             }
 
+
+
+
             /*
             echo '<p><b>Totale: '.$totale_squadra.'</b> + '. $moduloModificatore .'<br>';
             echo 'Totale Sostituzioni: '.$sostituzioni.'<br>';
@@ -854,95 +851,27 @@ class CalendarioController extends Controller {
             }
 
 
-            // echo sprintf('%s: %s (%s)<br>',$team_id,$totale_squadra,implode('-',$arrayModuloEffettivo));
-
             /**
-             * TODO
-             * - COMPLETARE PROCEDURA SOSTITUZIONE PORTIERE!!!
-             * - CONTROLLARE MODULI
+             * TODO COMPLETARE PROCEDURA SOSTITUZIONI!!!
              */
             //dd($modulo_effettivo, array_count_values($modulo_effettivo));
-
-            /* Calcolare dopo il ciclo, assieme al conteggio del modulo!!! */
-            // $goal_fatti = $this->calcolaGoals( $totale_squadra + $moduloModificatore );
-
-
+            $goal_fatti = $this->calcolaGoals( $totale_squadra + $moduloModificatore );
 
             /* Salva risultato */
             $risultato = new Result();
             $risultato->giornata    = $giornata;
             $risultato->teams_id    = $team_id;
             $risultato->stagione_id = $stagioneId;
-            // $risultato->result      = $totale_squadra + $moduloModificatore;
+            $risultato->result      = $totale_squadra + $moduloModificatore;
             $risultato->modulo_id   = $moduloId;
-            // $risultato->goal        = $goal_fatti;
+            $risultato->goal        = $goal_fatti;
             $risultato->save();
 
-            $risultatoId = $risultato->id;
-
             $counter_team++;
-
-            // recupera modificatore del modulo finale!
-            $moduloModificatore = Moduli::whereName( implode('-', $arrayModuloEffettivo) )->first()->modificatore;
-
-            $totale_partita[$team_id] = [
-                'resultId' => $risultatoId,
-                'modificatoreModulo' => $moduloModificatore,
-                'totaleSquadra' => $totale_squadra
-            ];
 
         endforeach;
 
 
-        // Aggiorna i risultati con i totali completi di modificatore modulo
-        //  (totale squadra - modificatore modulo avversario)
-        $fc->each(function($partita) use ($totale_partita){
-
-            // associa i dati dei team
-            $team_1         = $totale_partita[$partita->team_1_id];
-            $result_1_id    = $team_1['resultId'];
-            $result_1_mod   = $team_1['modificatoreModulo'];
-            $result_1_tot   = $team_1['totaleSquadra'];
-
-            $team_2         = $totale_partita[$partita->team_2_id];
-            $result_2_id    = $team_2['resultId'];
-            $result_2_mod   = $team_2['modificatoreModulo'];
-            $result_2_tot   = $team_2['totaleSquadra'];
-
-            // calcola il totale compreso di modificatore dell'avversario
-            $totale_finale_1 = $result_1_tot + $result_2_mod;
-            $totale_finale_2 = $result_2_tot + $result_1_mod;
-
-            // calcola i gol
-            $goal_fatti_1 = $this->calcolaGoals( $totale_finale_1 );
-            $goal_fatti_2 = $this->calcolaGoals( $totale_finale_2 );
-
-
-            // aggiorna risultati
-            $up_1 = Result::find($result_1_id);
-            $up_1->result = $totale_finale_1;
-            $up_1->goal = $goal_fatti_1;
-            $up_1->save();
-
-            $up_2 = Result::find($result_2_id);
-            $up_2->result = $totale_finale_2;
-            $up_2->goal = $goal_fatti_2;
-            $up_2->save();
-
-
-            // check conteggi
-            /*
-            echo $partita->team_1_id;
-            echo '('. $totale_partita[$partita->team_1_id]['totaleSquadra'] .'-'.$totale_partita[$partita->team_2_id]['modificatoreModulo'] .')';
-            echo ' = ' . $totale_finale_1;
-            echo ' - ';
-            echo $partita->team_2_id;
-            echo '('. $totale_partita[$partita->team_2_id]['totaleSquadra'] .'-'.$totale_partita[$partita->team_1_id]['modificatoreModulo'] .')';
-            echo ' = ' . $totale_finale_2;
-            echo '<br>';
-            */
-
-        });
 
     }
 
